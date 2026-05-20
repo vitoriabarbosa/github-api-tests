@@ -1,0 +1,26 @@
+@startuml C2 - Camadas do Framework
+!include <C4/C4_Container>
+
+title C2 - Camadas do Framework
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+Person(tester, "QA Engineer")
+
+System_Boundary(fw, "API Test Framework") {
+    Container(test, "Test Layer", "Playwright Test / JS", "Specs com cenários e asserções de negócio")
+    Container(service, "Service Layer", "JavaScript", "Módulos por domínio que encapsulam chamadas à API")
+    Container(core, "Core Layer", "JavaScript", "Motor reutilizável: ApiClient, SchemaValidator e Assertions")
+    Container(support, "Support Layer", "JavaScript", "Infraestrutura base: Config, Logger e TestData")
+}
+
+System_Ext(github, "GitHub API", "API REST pública")
+
+Rel_D(tester, test, "Executa")
+Rel_D(test, service, "Usa módulos")
+Rel_D(service, core, "Usa core")
+Rel_D(core, support, "Usa infraestrutura")
+Rel_R(core, github, "HTTP GET")
+
+@enduml

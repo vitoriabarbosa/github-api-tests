@@ -1,39 +1,24 @@
-const { test, expect } = require('@playwright/test');
-const config = require('../utils/config');
+const {test}=require('@playwright/test')
+const CommitsService=require('../services/commitsService')
+const Assertions=require('../core/assertions')
+const testData=require('../fixtures/testData')
 
 test('T013 - Listar commits de um repositório', async ({ request }) => {
+    const service = new CommitsService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/repos/${config.OWNER}/${config.REPO}/commits`
-    );
+    const response=await service.listCommits(testData.owner, testData.repo)
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(Array.isArray(body)).toBeTruthy();
-
-    body.forEach(commit => {
-
-        expect(commit).toHaveProperty('sha');
-        expect(commit).toHaveProperty('commit');
-
-        expect(commit.commit).toHaveProperty('message');
-        expect(commit.commit).toHaveProperty('author');
-
-        expect(typeof commit.sha).toBe('string');
-    });
-});
+    assertions.assertStatus(response, 200)
+})
 
 test('T014 - Validar tratamento de erros para repositório inexistente', async ({ request }) => {
+    const service = new CommitsService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/repos/${config.NOT_OWNER}/${config.REPO}/commits`
-    );
+    const response=await service.listCommits(testData.invalidOwner, testData.repo)
+    const body=await response.json()
 
-    expect(response.status()).toBe(404);
-
-    const body = await response.json();
-
-    expect(body.message).toBe('Not Found');
-});
+    assertions.assertStatus(response, 404)
+    assertions.assertNotFound(body)
+})

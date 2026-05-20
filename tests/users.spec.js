@@ -1,61 +1,37 @@
-const { test, expect } = require('@playwright/test');
-const config = require('../utils/config');
+const {test}=require('@playwright/test')
+const UsersService=require('../services/usersService')
+const Assertions=require('../core/assertions')
+const testData=require('../fixtures/testData')
 
 test('T007 - Validar busca de usuário válido', async ({ request }) => {
+    const service = new UsersService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/users/${config.USERNAME}`
-    );
+    const response=await service.getUser(testData.validUser)
+    const body=await response.json()
 
-    expect(response.status()).toBe(200);
-    
-    expect(response.headers()['content-type'])
-        .toContain('application/json');
-
-    const body = await response.json();
-
-    expect(body).toHaveProperty('login');
-    expect(body).toHaveProperty('id');
-    expect(body).toHaveProperty('avatar_url');
-
-    expect(body.login.toLowerCase())
-        .toBe(config.USERNAME.toLowerCase());
-
-    expect(typeof body.id).toBe('number');
-    expect(typeof body.login).toBe('string');
-});
+    assertions.assertStatus(response, 200)
+    assertions.assertContentType(response)
+})
 
 test('T008 - Validar comportamento para usuário inexistente', async ({ request }) => {
+    const service = new UsersService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/users/${config.NOT_USER}`
-    );
+    const response=await service.getUser(testData.invalidUser)
+    const body=await response.json()
 
-    expect(response.status()).toBe(404);
-
-    const body = await response.json();
-
-    expect(body.message).toBe('Not Found');
-
-    expect(typeof body.message).toBe('string');
-});
+    assertions.assertStatus(response, 404)
+    assertions.assertNotFound(body)
+})
 
 test('T009 - Validar estrutura da resposta do usuário', async ({ request }) => {
+    const service = new UsersService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/users/${config.USERNAME}`
-    );
+    const response=await service.getUser(testData.validUser)
+    const body=await response.json()
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(body).toHaveProperty('login');
-    expect(body).toHaveProperty('id');
-    expect(body).toHaveProperty('avatar_url');
-    expect(body).toHaveProperty('type');
-    expect(body).toHaveProperty('public_repos');
-
-    expect(typeof body.id).toBe('number');
-    expect(typeof body.followers).toBe('number');
-});
+    assertions.assertStatus(response, 200)
+    assertions.assertContentType(response)
+})

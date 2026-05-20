@@ -1,38 +1,25 @@
-const { test, expect } = require('@playwright/test');
-const config = require('../utils/config');
+const {test}=require('@playwright/test')
+const ReposService=require('../services/reposService')
+const IssuesService=require('../services/issuesService')
+const Assertions=require('../core/assertions')
+const testData=require('../fixtures/testData')
 
 test('T003 - Teste de Validação de Parametrização de Linguagem', async ({ request }) => {
+    const service = new ReposService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/search/repositories?q=language:java`
-    );
+    const response=await service.searchByLanguage(testData.searchLanguage)
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(body).toHaveProperty('items');
-
-    body.items.forEach(repo => {
-
-        if (repo.language) {
-            expect(repo.language.toLowerCase())
-                .toBe('java');
-        }
-    });
-});
+    assertions.assertStatus(response, 200)
+})
 
 test('T004 - Teste de Limitação de Resultados por Página', async ({ request }) => {
+    const service = new IssuesService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/repos/${config.OWNER}/${config.REPO}/issues?per_page=5&page=1`
-    );
+    const response=await service.listIssues(testData.owner, testData.repo, null, testData.pagination)
+    const body=await response.json()
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(Array.isArray(body)).toBeTruthy();
-
-    expect(body.length).toBeLessThanOrEqual(5);
-});
+    assertions.assertStatus(response, 200)
+    assertions.assertPagination(body, testData.pagination.perPage)
+})

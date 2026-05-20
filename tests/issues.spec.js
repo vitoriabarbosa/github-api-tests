@@ -1,37 +1,26 @@
-const { test, expect } = require('@playwright/test');
-const config = require('../utils/config');
+const {test, expect}=require('@playwright/test')
+const IssuesService=require('../services/issuesService')
+const Assertions=require('../core/assertions')
+const testData=require('../fixtures/testData')
 
 test('T005 - Validar listagem geral de issues', async ({ request }) => {
+    const service = new IssuesService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/repos/${config.OWNER}/${config.REPO}/issues`
-    );
+    const response=await service.listIssues(testData.owner, testData.repo)
+    const body=await response.json()
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(Array.isArray(body)).toBeTruthy();
-
-    body.forEach(issue => {
-
-        expect(issue).toHaveProperty('id');
-        expect(issue).toHaveProperty('title');
-        expect(issue).toHaveProperty('state');
-    });
-});
+    assertions.assertStatus(response, 200)
+    assertions.assertContentType(response)
+})
 
 test('T006 - Validar filtro de status das issues', async ({ request }) => {
+    const service = new IssuesService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/repos/${config.OWNER}/${config.REPO}/issues?state=open`
-    );
+    const response=await service.listIssues(testData.owner, testData.repo, 'open')
+    const body=await response.json()
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    body.forEach(issue => {
-        expect(issue.state).toBe('open');
-    });
-});
+    assertions.assertStatus(response, 200)
+    body.forEach(issue => expect(issue.state).toBe('open'))
+})

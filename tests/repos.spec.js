@@ -1,60 +1,35 @@
-const { test, expect } = require('@playwright/test');
-const config = require('../utils/config');
+const {test}=require('@playwright/test')
+const ReposService=require('../services/reposService')
+const Assertions=require('../core/assertions')
+const testData=require('../fixtures/testData')
 
 test('T010 - Listar repositórios com sucesso', async ({ request }) => {
+    const service = new ReposService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/users/${config.USERNAME}/repos`
-    );
+    const response=await service.listRepos(testData.validUser)
+    const body=await response.json()
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(Array.isArray(body)).toBeTruthy();
-
-    body.forEach(repo => {
-
-        expect(repo).toHaveProperty('id');
-        expect(repo).toHaveProperty('name');
-        expect(repo).toHaveProperty('full_name');
-
-        expect(repo.owner.login.toLowerCase())
-            .toBe(config.USERNAME.toLowerCase());
-    });
-});
+    assertions.assertStatus(response, 200)
+    assertions.assertOwner(body, testData.validUser)
+})
 
 test('T011 - Validar estrutura da resposta', async ({ request }) => {
+    const service = new ReposService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/users/${config.USERNAME}/repos`
-    );
+    const response=await service.listRepos(testData.validUser)
 
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    body.forEach(repo => {
-
-        expect(repo).toHaveProperty('private');
-        expect(repo).toHaveProperty('html_url');
-        expect(repo).toHaveProperty('description');
-
-        expect(repo.owner).toHaveProperty('login');
-
-        expect(typeof repo.private).toBe('boolean');
-    });
-});
+    assertions.assertStatus(response, 200)
+})
 
 test('T012 - Usuário inexistente', async ({ request }) => {
+    const service = new ReposService(request)
+    const assertions = new Assertions()
 
-    const response = await request.get(
-        `${config.BASE_URL}/users/${config.NOT_USER}/repos`
-    );
+    const response=await service.listRepos(testData.invalidUser)
+    const body=await response.json()
 
-    expect(response.status()).toBe(404);
-
-    const body = await response.json();
-
-    expect(body.message).toBe('Not Found');
-});
+    assertions.assertStatus(response, 404)
+    assertions.assertNotFound(body)
+})

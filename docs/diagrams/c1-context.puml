@@ -1,0 +1,16 @@
+@startuml C1 - Contexto do Sistema
+!include <C4/C4_Context>
+
+title C1 - Contexto do Sistema
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+Person(tester, "QA Engineer", "Executa os testes automatizados")
+System(framework, "API Test Framework", "Valida endpoints, schemas, lógica de negócio e integridade de dados")
+System_Ext(github, "GitHub API", "API REST pública do GitHub")
+
+Rel_D(tester, framework, "Executa")
+Rel_D(framework, github, "HTTP Requests")
+
+@enduml
