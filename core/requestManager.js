@@ -1,4 +1,3 @@
-// core/requestManager.js
 const logger = require("../utils/logger");
 
 class RequestManager {
