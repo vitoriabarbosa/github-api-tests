@@ -1,4 +1,3 @@
-// tests/refactored/users.spec.js (versão refatorada)
 const { test } = require('@playwright/test');
 const ServiceFactory = require('../core/serviceFactory');
 const Assertions = require('../core/assertions');
@@ -14,7 +13,6 @@ test.describe('Users API Tests', () => {
         });
         assertions = new Assertions();
         
-        // Se tiver token, configura uma vez para todos os testes
         if (process.env.GITHUB_TOKEN) {
             serviceFactory.setAuthToken(process.env.GITHUB_TOKEN);
         }
