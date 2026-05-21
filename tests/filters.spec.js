@@ -31,4 +31,8 @@ test.describe('Filters API Tests', () => {
         assertions.assertStatus(response, 200)
         assertions.assertPagination(body, testData.pagination.perPage)
     })
+
+    test.afterEach(() => {
+        serviceFactory.cleanup();
+    });
 });

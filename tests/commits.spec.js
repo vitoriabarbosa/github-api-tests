@@ -1,24 +1,37 @@
 const {test}=require('@playwright/test')
-const CommitsService=require('../services/commitsService')
+const ServiceFactory = require('../core/serviceFactory');
 const Assertions=require('../core/assertions')
 const testData=require('../fixtures/testData')
 
-test('T013 - Listar commits de um repositório', async ({ request }) => {
-    const service = new CommitsService(request)
-    const assertions = new Assertions()
+test.describe('Commits API Tests', () => {
+    let serviceFactory;
+    let assertions;
 
-    const response=await service.listCommits(testData.owner, testData.repo)
+    test.beforeEach(async ({ request }) => {
+        serviceFactory = new ServiceFactory(request, {
+            baseURL: 'https://api.github.com'
+        });
+        assertions = new Assertions();
+    });
 
-    assertions.assertStatus(response, 200)
-})
+    test('T013 - Listar commits de um repositório', async () => {
+        const service = serviceFactory.getCommitsService();
+        
+        const response = await service.listCommits(testData.owner, testData.repo);
+        
+        assertions.assertStatus(response, 200);
+    });
 
-test('T014 - Validar tratamento de erros para repositório inexistente', async ({ request }) => {
-    const service = new CommitsService(request)
-    const assertions = new Assertions()
+    test('T014 - Validar tratamento de erros para repositório inexistente', async ({ request }) => {
+        const service = serviceFactory.getCommitsService()
+        const response=await service.listCommits(testData.invalidOwner, testData.repo)
+        const body=await response.json()
 
-    const response=await service.listCommits(testData.invalidOwner, testData.repo)
-    const body=await response.json()
+        assertions.assertStatus(response, 404)
+        assertions.assertNotFound(body)
+    });
 
-    assertions.assertStatus(response, 404)
-    assertions.assertNotFound(body)
-})
+    test.afterEach(() => {
+        serviceFactory.cleanup();
+    });
+});
