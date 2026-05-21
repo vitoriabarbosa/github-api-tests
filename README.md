@@ -166,7 +166,7 @@ classDiagram
     ``` 
 
     ### Diagrama de Arquitetura
-    ```mermaid
+    ```
     graph TB
     subgraph "Test Layer"
         T1[commits.spec.js]
