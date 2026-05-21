@@ -1,26 +1,42 @@
 const {test, expect}=require('@playwright/test')
-const PullsService=require('../services/pullsService')
+const ServiceFactory = require('../core/serviceFactory');
 const Assertions=require('../core/assertions')
 const testData=require('../fixtures/testData')
 
-test('T001 - Pull Requests open', async ({ request }) => {
-    const service = new PullsService(request)
-    const assertions = new Assertions()
+test.describe('Pulls API Tests', () => {
+    let serviceFactory;
+    let assertions;
 
-    const response=await service.listPulls(testData.owner, testData.repo, 'open')
-    const body=await response.json()
+    test.beforeEach(async ({ request }) => {
+        serviceFactory = new ServiceFactory(request, {
+            baseURL: 'https://api.github.com'
+        });
+        assertions = new Assertions();
+    });
 
-    assertions.assertStatus(response, 200)
-    body.forEach(pr => expect(pr.state).toBe('open'))
-})
+    test('T001 - Pull Requests open', async ({ request }) => {
+        const service = serviceFactory.getPullsService(request)
+        const assertions = new Assertions()
 
-test('T002 - Pull Requests closed', async ({ request }) => {
-    const service = new PullsService(request)
-    const assertions = new Assertions()
+        const response=await service.listPulls(testData.owner, testData.repo, 'open')
+        const body=await response.json()
 
-    const response=await service.listPulls(testData.owner, testData.repo, 'closed')
-    const body=await response.json()
+        assertions.assertStatus(response, 200)
+        body.forEach(pr => expect(pr.state).toBe('open'))
+    })
 
-    assertions.assertStatus(response, 200)
-    body.forEach(pr => expect(pr.state).toBe('closed'))
-})
+    test('T002 - Pull Requests closed', async ({ request }) => {
+        const service = serviceFactory.getPullsService(request)
+        const assertions = new Assertions()
+
+        const response=await service.listPulls(testData.owner, testData.repo, 'closed')
+        const body=await response.json()
+
+        assertions.assertStatus(response, 200)
+        body.forEach(pr => expect(pr.state).toBe('closed'))
+    })
+
+    test.afterEach(() => {
+        serviceFactory.cleanup();
+    });
+});

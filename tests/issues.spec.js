@@ -1,11 +1,22 @@
 const {test, expect}=require('@playwright/test')
-const IssuesService=require('../services/issuesService')
+const ServiceFactory = require('../core/serviceFactory');
 const Assertions=require('../core/assertions')
 const testData=require('../fixtures/testData')
 
-test('T005 - Validar listagem geral de issues', async ({ request }) => {
-    const service = new IssuesService(request)
-    const assertions = new Assertions()
+test.describe('Issues API Tests', () => {
+    let serviceFactory;
+    let assertions;
+
+    test.beforeEach(async ({ request }) => {
+        serviceFactory = new ServiceFactory(request, {
+            baseURL: 'https://api.github.com'
+        });
+        assertions = new Assertions();
+    });
+
+    test('T005 - Validar listagem geral de issues', async ({ request }) => {
+        const service = serviceFactory.getIssuesService(request)
+        const assertions = new Assertions()
 
     const response=await service.listIssues(testData.owner, testData.repo)
     const body=await response.json()
@@ -14,8 +25,8 @@ test('T005 - Validar listagem geral de issues', async ({ request }) => {
     assertions.assertContentType(response)
 })
 
-test('T006 - Validar filtro de status das issues', async ({ request }) => {
-    const service = new IssuesService(request)
+    test('T006 - Validar filtro de status das issues', async ({ request }) => {
+        const service = serviceFactory.getIssuesService(request)
     const assertions = new Assertions()
 
     const response=await service.listIssues(testData.owner, testData.repo, 'open')
@@ -23,4 +34,9 @@ test('T006 - Validar filtro de status das issues', async ({ request }) => {
 
     assertions.assertStatus(response, 200)
     body.forEach(issue => expect(issue.state).toBe('open'))
-})
+    })
+
+    test.afterEach(() => {
+        serviceFactory.cleanup();
+    });
+});
