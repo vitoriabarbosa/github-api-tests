@@ -164,4 +164,83 @@ classDiagram
     ServiceFactory --> IssuesService : instantiates
     ServiceFactory --> CommitsService : instantiates
     ``` 
+
+    ### Diagrama de Arquitetura
+    ```mermaid
+    graph TB
+    subgraph "Test Layer"
+        T1[commits.spec.js]
+        T2[issues.spec.js]
+        T3[pulls.spec.js]
+        T4[repos.spec.js]
+        T5[users.spec.js]
+        T6[filters.spec.js]
+    end
     
+    subgraph "Factory Layer"
+        SF[ServiceFactory]
+    end
+    
+    subgraph "Service Layer"
+        CS[CommitsService]
+        IS[IssuesService]
+        PS[PullsService]
+        RS[ReposService]
+        US[UsersService]
+    end
+    
+    subgraph "Core Layer"
+        AC[ApiClient]
+        RM[RequestManager<br/>SINGLETON]
+        AS[Assertions]
+        SV[SchemaValidator]
+    end
+    
+    subgraph "HTTP Layer"
+        HTTP[Playwright Request]
+    end
+    
+    subgraph "External"
+        GH[GitHub API]
+    end
+    
+    T1 --> SF
+    T2 --> SF
+    T3 --> SF
+    T4 --> SF
+    T5 --> SF
+    T6 --> SF
+    
+    SF --> CS
+    SF --> IS
+    SF --> PS
+    SF --> RS
+    SF --> US
+    
+    CS --> AC
+    IS --> AC
+    PS --> AC
+    RS --> AC
+    US --> AC
+    
+    AC --> RM
+    RM --> HTTP
+    HTTP --> GH
+    
+    CS -.-> SV
+    IS -.-> SV
+    PS -.-> SV
+    RS -.-> SV
+    US -.-> SV
+    
+    T1 -.-> AS
+    T2 -.-> AS
+    T3 -.-> AS
+    T4 -.-> AS
+    T5 -.-> AS
+    T6 -.-> AS
+    
+    style RM fill:#f9f,stroke:#333,stroke-width:4px
+    style SF fill:#bbf,stroke:#333,stroke-width:2px
+    style GH fill:#bfb,stroke:#333,stroke-width:2px
+    ```
