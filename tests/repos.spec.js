@@ -1,5 +1,4 @@
 const {test, expect}=require('@playwright/test')
-const ReposService=require('../services/reposService')
 const ServiceFactory = require('../core/serviceFactory');
 const Assertions=require('../core/assertions')
 const testData=require('../fixtures/testData')
