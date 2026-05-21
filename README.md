@@ -166,9 +166,9 @@ classDiagram
     ``` 
 
     ### Diagrama de Arquitetura
-    ```
-    graph TB
-    subgraph "Test Layer"
+    ```mermaid
+    flowchart TB
+    subgraph TestLayer[Test Layer]
         T1[commits.spec.js]
         T2[issues.spec.js]
         T3[pulls.spec.js]
@@ -177,11 +177,11 @@ classDiagram
         T6[filters.spec.js]
     end
     
-    subgraph "Factory Layer"
+    subgraph FactoryLayer[Factory Layer]
         SF[ServiceFactory]
     end
     
-    subgraph "Service Layer"
+    subgraph ServiceLayer[Service Layer]
         CS[CommitsService]
         IS[IssuesService]
         PS[PullsService]
@@ -189,18 +189,18 @@ classDiagram
         US[UsersService]
     end
     
-    subgraph "Core Layer"
+    subgraph CoreLayer[Core Layer]
         AC[ApiClient]
         RM[RequestManager<br/>SINGLETON]
         AS[Assertions]
         SV[SchemaValidator]
     end
     
-    subgraph "HTTP Layer"
+    subgraph HTTPLayer[HTTP Layer]
         HTTP[Playwright Request]
     end
     
-    subgraph "External"
+    subgraph External[External]
         GH[GitHub API]
     end
     
@@ -239,8 +239,4 @@ classDiagram
     T4 -.-> AS
     T5 -.-> AS
     T6 -.-> AS
-    
-    style RM fill:#f9f,stroke:#333,stroke-width:4px
-    style SF fill:#bbf,stroke:#333,stroke-width:2px
-    style GH fill:#bfb,stroke:#333,stroke-width:2px
-    ```
+    ``` 
