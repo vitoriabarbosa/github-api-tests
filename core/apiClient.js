@@ -1,19 +1,29 @@
-const logger=require('../utils/logger')
+const RequestManager = require('./requestManager');
 
 class ApiClient{
-    constructor(request, baseURL){
-        this.request=request
-        this.baseURL=baseURL
+    constructor(request, baseURL, options = {}) {
+        this.requestManager = RequestManager.getInstance(request, baseURL, options);
     }
 
-    async get(endpoint, params={}){
-        const url=`${this.baseURL}${endpoint}`
-        const start=Date.now()
-        logger.logRequest('GET', url)
-        const response = await this.request.get(url, {params})
-        logger.logResponse(response.status(), url, Date.now()-start)
-        return response
+    async get(endpoint, params = {}) {
+        return this.requestManager.get(endpoint, params);
+    }
+    
+    async post(endpoint, data = {}, params = {}) {
+        return this.requestManager.post(endpoint, data, params);
+    }
+    
+    async put(endpoint, data = {}, params = {}) {
+        return this.requestManager.put(endpoint, data, params);
+    }
+    
+    async delete(endpoint, params = {}) {
+        return this.requestManager.delete(endpoint, params);
+    }
+    
+    setAuthToken(token) {
+        this.requestManager.setAuthToken(token);
     }
 }
 
-module.exports=ApiClient
+module.exports = ApiClient;

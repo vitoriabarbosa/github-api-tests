@@ -17,7 +17,12 @@ class ReposService{
     async searchByLanguage(language){                    
         const response = await this.client.get(`/search/repositories`, {q:`language:${language}`});                                                    
         return response;
-    }                                                                         
+    }                
+    
+    async getAuthenticatedRepos() {
+        const response = await this.client.get('/user/repos');
+        return response;
+    }
 }                                                                             
    
 module.exports=ReposService

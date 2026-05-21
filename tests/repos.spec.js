@@ -1,4 +1,4 @@
-const {test}=require('@playwright/test')
+const {test, expect}=require('@playwright/test')
 const ReposService=require('../services/reposService')
 const Assertions=require('../core/assertions')
 const testData=require('../fixtures/testData')
@@ -33,3 +33,17 @@ test('T012 - Usuário inexistente', async ({ request }) => {
     assertions.assertStatus(response, 404)
     assertions.assertNotFound(body)
 })
+
+const hasToken = !!process.env.GITHUB_TOKEN;
+
+test('T015 - Listar meus repositórios (autenticado)', async ({ request }) => {
+      test.skip(!hasToken, 'Este teste requer autenticação - configure GITHUB_TOKEN');
+    const service = new ReposService(request);
+    const assertions = new Assertions();
+    
+    const response = await service.getAuthenticatedRepos();
+    const body = await response.json();
+    
+    assertions.assertStatus(response, 200);
+    expect(body).toBeInstanceOf(Array);
+});

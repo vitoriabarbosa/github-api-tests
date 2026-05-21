@@ -4,7 +4,7 @@ const userSchema=require('../schemas/users.schema')
 const config=require('../utils/config')                                   
    
 class UsersService{                                                          
-    constructor(request){                                
+    constructor(request, options = {}){                                
         this.client = new ApiClient(request, config.BASE_URL)                
         this.validator = new SchemaValidator()
     }                                                                         
