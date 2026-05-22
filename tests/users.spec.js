@@ -3,6 +3,8 @@ const ServiceFactory = require('../core/serviceFactory');
 const Assertions = require('../core/assertions');
 const testData = require('../fixtures/testData');
 const testContext = require('../core/testContext');
+const dynamicCases = require('../fixtures/dynamic_test_cases.json');
+
 
 test.describe('Users API Tests', () => {
     let serviceFactory;
@@ -26,6 +28,22 @@ test.describe('Users API Tests', () => {
         if (token) {
             serviceFactory.setAuthToken(token);
         }
+    });
+
+    dynamicCases.users_scenarios.forEach((scenario) => {
+        test(`${scenario.id} - ${scenario.description}`, async () => {
+            const usersService = serviceFactory.getUsersService();
+            const response = await usersService.getUser(scenario.username);
+            
+            assertions.assertStatus(response, scenario.expected_status);
+            
+            if (scenario.expected_status === 200) {
+                assertions.assertContentType(response);
+            } else if (scenario.expected_status === 404) {
+                const body = await response.json();
+                assertions.assertNotFound(body);
+            }
+        });
     });
     
     test('T007 - Validar busca de usuário válido', async () => {

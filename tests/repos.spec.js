@@ -3,6 +3,7 @@ const ServiceFactory = require('../core/serviceFactory');
 const Assertions=require('../core/assertions')
 const testData=require('../fixtures/testData')
 const testContext = require('../core/testContext');
+const dynamicCases = require('../fixtures/dynamic_test_cases.json');
 
 test.describe('Repos API Tests', () => {
     let serviceFactory;
@@ -29,6 +30,21 @@ test.describe('Repos API Tests', () => {
         }
     });
 
+    dynamicCases.repos_scenarios.forEach((scenario) => {
+        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+            const service = serviceFactory.getReposService(request);
+            const response = await service.getRepo(scenario.owner, scenario.repo);
+            
+            assertions.assertStatus(response, scenario.expected_status);
+            
+            if (scenario.expected_status === 200) {
+                const body = await response.json();
+                expect(body.private).toBe(scenario.private);
+                expect(body.name).toBe(scenario.repo);
+                expect(body.owner.login.toLowerCase()).toBe(scenario.owner.toLowerCase());
+            }
+        });
+    });
    
     test('T010 - Listar repositórios com sucesso', async ({ request }) => {
         const service = serviceFactory.getReposService(request)
@@ -82,7 +98,6 @@ test.describe('Repos API Tests', () => {
     });
 
     test.afterAll(() => {
-        // Limpeza dos dados da suite
         testContext.clearSuite();
     });
 
