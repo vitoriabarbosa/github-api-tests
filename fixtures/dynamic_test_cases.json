@@ -1,0 +1,20 @@
+{
+    "users_scenarios": [
+        {"id": "TC001", "description": "Usuário padrão válido", "username": "octocat", "expected_status": 200, "check_schema": true},
+        {"id": "TC002", "description": "Usuário inexistente com padrão numérico", "username": "invalid_user_12345", "expected_status": 404, "check_schema": false},
+        {"id": "TC003", "description": "Username contendo espaços/URL encoding", "username": "octocat%20", "expected_status": 200, "check_schema": true},
+        {"id": "TC004", "description": "Tratamento de nome longo com hífen", "username": "octo-cat", "expected_status": 200, "check_schema": true},
+        {"id": "TC005", "description": "Parâmetro de nome de usuário vazio", "username": "", "expected_status": 404, "check_schema": false}
+    ],
+    "repos_scenarios": [
+        {"id": "TC010", "description": "Repositório público padrão", "owner": "octocat", "repo": "Hello-World", "expected_status": 200, "private": false},
+        {"id": "TC011", "description": "Nome de repositório com caracteres especiais", "owner": "octocat", "repo": "testing.spec-core_repo", "expected_status": 404, "private": false},
+        {"id": "TC012", "description": "Dono de repositório inválido", "owner": "invalid_owner_12345", "repo": "Hello-World", "expected_status": 404, "private": false}
+    ],
+    "issues_pulls_filters": [
+        {"id": "TC020", "state": "open", "description": "Filtro apenas para estado aberto"},
+        {"id": "TC021", "state": "closed", "description": "Filtro apenas para estado fechado"},
+        {"id": "TC022", "state": "all", "description": "Filtro para todos os estados simultâneos"},
+        {"id": "TC023", "state": "invalid_state_xyz", "description": "Fallback de estado inválido ou erro de validação"}
+    ]
+}

@@ -23,6 +23,11 @@ class ReposService{
         const response = await this.client.get('/user/repos');
         return response;
     }
+    
+    async getRepo(owner, repo) {
+        const response = await this.client.get(`/repos/${owner}/${repo}`);
+        return response;
+    }
 }                                                                             
    
 module.exports=ReposService
