@@ -1,23 +1,29 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-const logFilePath = path.join(__dirname, 'logs', 'test-execution.log');
-const reportPath = path.join(__dirname, 'logs', 'execution-report.html');
+const logFilePath = path.join(__dirname, 'logs', 'test-execution.log')
+const reportPath = path.join(__dirname, 'logs', 'execution-report.html')
 
 function generateReport() {
     if (!fs.existsSync(logFilePath)) {
-        console.log('Log file not found. Please run the tests first.');
-        return;
+        console.log('Log file not found. Please run the tests first.')
+        return
     }
 
-    const logs = fs.readFileSync(logFilePath, 'utf-8').split('\n').filter(Boolean);
-    
-    let errorCount = 0;
-    const logRows = logs.map(log => {
-        if (log.includes('ERROR')) errorCount++;
-        const rowClass = log.includes('ERROR') ? 'error' : log.includes('WARN') ? 'warn' : 'info';
-        return `<div class="log-entry ${rowClass}">${log}</div>`;
-    }).join('');
+    const logs = fs.readFileSync(logFilePath, 'utf-8').split('\n').filter(Boolean)
+
+    let errorCount = 0
+    const logRows = logs
+        .map((log) => {
+            if (log.includes('ERROR')) errorCount++
+            const rowClass = log.includes('ERROR')
+                ? 'error'
+                : log.includes('WARN')
+                  ? 'warn'
+                  : 'info'
+            return `<div class="log-entry ${rowClass}">${log}</div>`
+        })
+        .join('')
 
     const htmlTemplate = `
         <!DOCTYPE html>
@@ -47,10 +53,10 @@ function generateReport() {
             </div>
         </body>
         </html>
-    `;
+    `
 
-    fs.writeFileSync(reportPath, htmlTemplate);
-    console.log(`\nHTML report successfully generated at: ${reportPath}`);
+    fs.writeFileSync(reportPath, htmlTemplate)
+    console.log(`\nHTML report successfully generated at: ${reportPath}`)
 }
 
-generateReport();
+generateReport()
