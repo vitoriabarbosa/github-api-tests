@@ -1,23 +1,23 @@
-const {expect} = require('@playwright/test')
+const { expect } = require('@playwright/test')
 
-class Assertions{
-    assertStatus(response, expectedStatus){
+class Assertions {
+    assertStatus(response, expectedStatus) {
         expect(response.status()).toBe(expectedStatus)
     }
-    assertContentType(response, type='application/json'){
+    assertContentType(response, type = 'application/json') {
         expect(response.headers()['content-type']).toContain(type)
     }
-    assertPagination(body, maxItems){
+    assertPagination(body, maxItems) {
         expect(Array.isArray(body)).toBeTruthy()
         expect(body.length).toBeLessThanOrEqual(maxItems)
     }
-    assertOwner(body, expectedOwner){
-        body.forEach(item => {
+    assertOwner(body, expectedOwner) {
+        body.forEach((item) => {
             expect(item.owner.login.toLowerCase()).toBe(expectedOwner.toLowerCase())
-        });
+        })
     }
-    assertNotFound(body){
+    assertNotFound(body) {
         expect(body.message).toBe('Not Found')
     }
 }
-module.exports=Assertions
+module.exports = Assertions

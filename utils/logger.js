@@ -1,8 +1,8 @@
-const winston = require('winston');
+const winston = require('winston')
 
 const customFormat = winston.format.printf(({ level, message, timestamp, context = 'Global' }) => {
-    return `[${timestamp}] ${level.toUpperCase()} [${context}] - ${message}`;
-});
+    return `[${timestamp}] ${level.toUpperCase()} [${context}] - ${message}`
+})
 
 const winstonLogger = winston.createLogger({
     level: 'debug',
@@ -21,7 +21,7 @@ const winstonLogger = winston.createLogger({
         new winston.transports.File({ filename: 'logs/errors.log', level: 'error' }),
         new winston.transports.File({ filename: 'logs/test-execution.log' })
     ]
-});
+})
 
 const logger = {
     info: (msg, meta) => winstonLogger.info(msg, meta),
@@ -30,16 +30,20 @@ const logger = {
     debug: (msg, meta) => winstonLogger.debug(msg, meta),
 
     logRequest(method, url) {
-        winstonLogger.info(`Requisicao iniciada: ${method.toUpperCase()} ${url}`, { context: 'ApiClient' });
+        winstonLogger.info(`Requisicao iniciada: ${method.toUpperCase()} ${url}`, {
+            context: 'ApiClient'
+        })
     },
-    
-    logResponse(status, url, duration) {
-        winstonLogger.info(`Resposta recebida: ${status} ${url} (${duration}ms)`, { context: 'ApiClient' });
-    },
-    
-    logError(url, error) {
-        winstonLogger.error(`Falha: ${url} - ${error.message}`, { context: 'ApiClient' });
-    }
-};
 
-module.exports = logger;
+    logResponse(status, url, duration) {
+        winstonLogger.info(`Resposta recebida: ${status} ${url} (${duration}ms)`, {
+            context: 'ApiClient'
+        })
+    },
+
+    logError(url, error) {
+        winstonLogger.error(`Falha: ${url} - ${error.message}`, { context: 'ApiClient' })
+    }
+}
+
+module.exports = logger
