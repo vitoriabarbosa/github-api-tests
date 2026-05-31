@@ -83,9 +83,10 @@ test.describe('Repos API Tests', () => {
 
     test('T015 - Listar meus repositórios (autenticado)', async ({ request }) => {
         const hasToken = !!testContext.getGlobal('token')
+        const isCI = process.env.GITHUB_ACTIONS === 'true'
         test.skip(
-            !hasToken,
-            'Este teste requer autenticação - configure a variável de escopo global token'
+            !hasToken || isCI,
+            'Este teste requer autenticação de usuário real (PAT) e é ignorado no CI'
         )
         const service = serviceFactory.getReposService()
 
