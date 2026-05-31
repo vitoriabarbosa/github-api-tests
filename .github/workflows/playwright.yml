@@ -1,0 +1,51 @@
+name: Playwright API Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  schedule:
+    # Executa toda semana (domingo) às 06:00 UTC (03:00 Horário de Brasília)
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout código fonte
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Instalar dependências
+      run: npm ci
+
+    # Como são apenas testes de API, geralmente não precisamos de navegadores completos (Chromium/Firefox/Webkit).
+    # No entanto, caso a configuração precise, o comando abaixo instala os navegadores necessários para o Playwright.
+    # O cache é gerenciado de forma nativa pelo setup-node para o NPM. O cache dos browsers pode ser feito se necessário.
+    - name: Instalar navegadores do Playwright (opcional para testes de API puro)
+      run: npx playwright install --with-deps
+
+    - name: Executar testes de API
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_SECRET }}
+      run: npx playwright test
+
+    - name: Upload de Relatórios e Evidências (Artifacts)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-artifacts
+        path: |
+          playwright-report/
+          test-results/
+        retention-days: 30
+

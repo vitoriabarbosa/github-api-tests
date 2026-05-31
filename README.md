@@ -341,3 +341,12 @@ npx playwright test --reporter=html
 # Abrir relatório
 npx playwright show-report
 ```
+
+## Integração Contínua (CI/CD)
+
+O projeto está totalmente preparado e configurado com suporte para execução automatizada em pipelines de integração contínua (CI/CD) nativamente através do **[GitHub Actions](.github/workflows/playwright.yml)**.
+
+Para detalhes completos sobre a arquitetura do pipeline, caches de pacotes, configurações de segredos e geração de artefatos na plataforma, consulte a nossa **[Documentação de CI/CD](docs/cicd.md)**.
+
+Para detalhes específicos sobre o processo de automação de execução e estratégias de monitoramento da saúde dos testes, consulte a nossa **[Documentação de Execução e Monitoramento Contínuo](docs/execucao_monitoramento.md)**.
+
