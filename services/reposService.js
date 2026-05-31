@@ -1,33 +1,35 @@
-const ApiClient=require('../core/apiClient')
-const SchemaValidator=require('../core/schemaValidator')                  
-const repoSchema=require('../schemas/repos.schema')
-const config=require('../utils/config')                                    
-                                                            
-class ReposService{
-    constructor(request){
-        this.client = new ApiClient(request, config.BASE_URL)               
+const ApiClient = require('../core/apiClient')
+const SchemaValidator = require('../core/schemaValidator')
+const repoSchema = require('../schemas/repos.schema')
+const config = require('../utils/config')
+
+class ReposService {
+    constructor(request) {
+        this.client = new ApiClient(request, config.BASE_URL)
         this.validator = new SchemaValidator()
-    }                                                                         
-                                                            
-    async listRepos(username){
-        const response=await this.client.get(`/users/${username}/repos`);
-        return response;                                                      
     }
-                                                                                
-    async searchByLanguage(language){                    
-        const response = await this.client.get(`/search/repositories`, {q:`language:${language}`});                                                    
-        return response;
-    }                
-    
+
+    async listRepos(username) {
+        const response = await this.client.get(`/users/${username}/repos`)
+        return response
+    }
+
+    async searchByLanguage(language) {
+        const response = await this.client.get(`/search/repositories`, {
+            q: `language:${language}`
+        })
+        return response
+    }
+
     async getAuthenticatedRepos() {
-        const response = await this.client.get('/user/repos');
-        return response;
+        const response = await this.client.get('/user/repos')
+        return response
     }
-    
+
     async getRepo(owner, repo) {
-        const response = await this.client.get(`/repos/${owner}/${repo}`);
-        return response;
+        const response = await this.client.get(`/repos/${owner}/${repo}`)
+        return response
     }
-}                                                                             
-   
-module.exports=ReposService
+}
+
+module.exports = ReposService

@@ -1,6 +1,6 @@
 require('dotenv').config(); 
 module.exports = {
-    timeout: 30000,
+    timeout: parseInt(process.env.TIMEOUT) || 30000,
 
     reporter: [
         ['html'],
@@ -9,13 +9,13 @@ module.exports = {
     ],
 
     use: {
-        baseURL: 'https://api.github.com',
+        baseURL: process.env.BASE_URL || 'https://api.github.com',
         extraHTTPHeaders: {
             Accept: 'application/vnd.github+json'
         },
-        // Captura de evidências
+        // Captura de evidências em falhas
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
         trace: 'retain-on-failure'
     }
-};
+};
