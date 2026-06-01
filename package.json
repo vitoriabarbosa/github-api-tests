@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "playwright test && node generate-log-report.js",
+    "report": "allure serve allure-results",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
@@ -17,6 +18,8 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "allure-commandline": "^2.42.0",
+    "allure-playwright": "^3.9.0",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
