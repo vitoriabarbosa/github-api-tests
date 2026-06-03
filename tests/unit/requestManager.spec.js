@@ -75,11 +75,11 @@ test.describe('RequestManager', () => {
             'https://api.github.com'
         );
 
-        rm.setAuthToken('novo-token');
+        rm.setAuthToken('github_pat_newtoken');
 
         expect(
             rm.getHeaders().Authorization
-        ).toBe('Bearer novo-token');
+        ).toBe('Bearer github_pat_newtoken');
     });
 
     test('deve remover token quando null', () => {
