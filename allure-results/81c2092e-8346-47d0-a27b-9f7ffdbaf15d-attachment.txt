@@ -1,0 +1,2 @@
+[2026-06-03 15:45:54] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/invalid_user_12345/repos
+[2026-06-03 15:45:55] INFO [ApiClient] - Resposta recebida: 401 https://api.github.com/users/invalid_user_12345/repos (410ms)

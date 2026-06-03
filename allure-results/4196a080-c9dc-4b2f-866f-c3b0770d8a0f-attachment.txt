@@ -1,0 +1,2 @@
+[2026-06-03 15:45:53] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/octocat
+[2026-06-03 15:45:54] INFO [ApiClient] - Resposta recebida: 401 https://api.github.com/users/octocat (367ms)

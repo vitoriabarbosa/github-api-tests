@@ -1,0 +1,2 @@
+[2026-06-03 15:45:46] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/repos/octocat/Hello-World/commits
+[2026-06-03 15:45:46] INFO [ApiClient] - Resposta recebida: 401 https://api.github.com/repos/octocat/Hello-World/commits (491ms)

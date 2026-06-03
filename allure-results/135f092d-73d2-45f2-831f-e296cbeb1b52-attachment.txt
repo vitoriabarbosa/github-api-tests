@@ -1,0 +1,2 @@
+[2026-06-03 15:45:53] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/
+[2026-06-03 15:45:53] INFO [ApiClient] - Resposta recebida: 404 https://api.github.com/users/ (375ms)

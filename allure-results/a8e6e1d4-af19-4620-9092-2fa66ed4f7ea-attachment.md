@@ -1,0 +1,49 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: tests\commits.spec.js >> Commits API Tests >> T014 - Validar tratamento de erros para repositório inexistente
+- Location: tests\commits.spec.js:25:5
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 404
+Received: 401
+```
+
+# Test source
+
+```ts
+  1  | const { expect } = require('@playwright/test')
+  2  | 
+  3  | class Assertions {
+  4  |     assertStatus(response, expectedStatus) {
+> 5  |         expect(response.status()).toBe(expectedStatus)
+     |                                   ^ Error: expect(received).toBe(expected) // Object.is equality
+  6  |     }
+  7  |     assertContentType(response, type = 'application/json') {
+  8  |         expect(response.headers()['content-type']).toContain(type)
+  9  |     }
+  10 |     assertPagination(body, maxItems) {
+  11 |         expect(Array.isArray(body)).toBeTruthy()
+  12 |         expect(body.length).toBeLessThanOrEqual(maxItems)
+  13 |     }
+  14 |     assertOwner(body, expectedOwner) {
+  15 |         body.forEach((item) => {
+  16 |             expect(item.owner.login.toLowerCase()).toBe(expectedOwner.toLowerCase())
+  17 |         })
+  18 |     }
+  19 |     assertNotFound(body) {
+  20 |         expect(body.message).toBe('Not Found')
+  21 |     }
+  22 | }
+  23 | module.exports = Assertions
+  24 | 
+```
