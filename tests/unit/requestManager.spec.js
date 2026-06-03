@@ -87,7 +87,7 @@ test.describe('RequestManager', () => {
             mockRequest,
             'https://api.github.com',
             {
-                authToken: 'token123'
+                authToken: 'github_pat_xxxxxxxxxxxxxxx'
             }
         );
 
