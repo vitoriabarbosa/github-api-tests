@@ -1,2 +1,0 @@
-[2026-06-03 15:45:46] INFO [ApiClient] - Requisicao iniciada: DELETE https://api.github.com/users/1
-[2026-06-03 15:45:46] INFO [ApiClient] - Resposta recebida: 204 https://api.github.com/users/1 (1ms)
