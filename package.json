@@ -8,13 +8,7 @@
   },
   "scripts": {
     "test": "playwright test && node generate-log-report.js",
-<<<<<<< HEAD
-    "test:unit": "playwright test tests/unit",
-    "coverage": "c8 --reporter=text --reporter=html playwright test tests/unit",
-    "coverage:report": "start coverage/index.html",
-=======
     "report": "allure serve allure-results",
->>>>>>> e2ad5b4606231549b93b440ba98aaf05c04887d9
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
@@ -24,12 +18,8 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-<<<<<<< HEAD
-    "c8": "^11.0.0",
-=======
     "allure-commandline": "^2.42.0",
     "allure-playwright": "^3.9.0",
->>>>>>> e2ad5b4606231549b93b440ba98aaf05c04887d9
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
