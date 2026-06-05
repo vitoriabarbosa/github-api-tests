@@ -331,6 +331,41 @@ npx playwright test
 # Usando token inline
 GITHUB_TOKEN=seu_token npx playwright test
 ```
+### Manutenção de Schemas
+#### Por que manter os schemas atualizados?
+A API do GitHub evolui constantemente. Manter os schemas sincronizados com a documentação oficial evita:
+
+* Falsos positivos nos testes
+* Quebras inesperadas em produção
+* Retrabalho na investigação de falhas
+
+#### Script de Atualização Automática
+O projeto possui um script que baixa os schemas oficiais da API do GitHub:
+```bash
+node scripts/fetchSchemas.js
+```
+Este script:
+
+* Baixa a especificação OpenAPI do GitHub
+* Extrai os schemas de usuário, repositório, issues, pulls e commits
+* Gera arquivos .auto.json com os schemas oficiais
+
+#### Fluxo de Manutenção 
+Executar a cada 2 meses ou quando detectar falhas suspeitas:
+```bash
+# 1. rodar o script
+node scripts/fetchSchemas.js
+
+# 2. Comparar com os schemas atuais
+diff schemas/users.schema.js schemas/users.schema.auto.json
+diff schemas/repos.schema.js schemas/repos.schema.auto.json
+diff schemas/issues.schema.js schemas/issues.schema.auto.json
+diff schemas/pulls.schema.js schemas/pulls.schema.auto.json
+diff schemas/commits.schema.js schemas/commits.schema.auto.json
+
+``` 
+
+Ai basta comparar para ver se houve alguma alteração na API o github
 
 ### Relatórios
 
