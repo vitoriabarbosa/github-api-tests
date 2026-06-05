@@ -1,0 +1,3 @@
+[2026-06-05 19:15:29] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/octocat
+[2026-06-05 19:15:29] INFO [ApiClient] - Resposta recebida: 200 https://api.github.com/users/octocat (244ms)
+UsersService validation passed

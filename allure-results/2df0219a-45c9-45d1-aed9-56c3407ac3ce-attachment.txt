@@ -1,0 +1,2 @@
+[2026-06-05 19:15:31] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/invalid_user_12345
+[2026-06-05 19:15:32] INFO [ApiClient] - Resposta recebida: 404 https://api.github.com/users/invalid_user_12345 (234ms)

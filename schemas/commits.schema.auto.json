@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "required": [
+    "sha",
+    "commit"
+  ],
+  "properties": {
+    "sha": {
+      "type": "string"
+    },
+    "commit": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "example": "https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e"
+        },
+        "author": {
+          "$ref": "#/components/schemas/nullable-git-user"
+        },
+        "committer": {
+          "$ref": "#/components/schemas/nullable-git-user"
+        },
+        "message": {
+          "type": "string",
+          "example": "Fix all the bugs"
+        },
+        "comment_count": {
+          "type": "integer",
+          "example": 0
+        },
+        "tree": {
+          "type": "object",
+          "properties": {
+            "sha": {
+              "type": "string",
+              "example": "827efc6d56897b048c772eb4087f854f46256132"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "example": "https://api.github.com/repos/octocat/Hello-World/tree/827efc6d56897b048c772eb4087f854f46256132"
+            }
+          },
+          "required": [
+            "sha",
+            "url"
+          ]
+        },
+        "verification": {
+          "$ref": "#/components/schemas/verification"
+        }
+      },
+      "required": [
+        "author",
+        "committer",
+        "comment_count",
+        "message",
+        "tree",
+        "url"
+      ]
+    }
+  }
+}

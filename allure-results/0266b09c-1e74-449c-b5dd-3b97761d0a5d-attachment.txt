@@ -1,0 +1,4 @@
+[2026-06-05 18:49:12] DEBUG [UsersService] - Buscando usuário: octo-cat
+[2026-06-05 18:49:12] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/octo-cat
+[2026-06-05 18:49:12] INFO [ApiClient] - Resposta recebida: 200 https://api.github.com/users/octo-cat (475ms)
+[2026-06-05 18:49:12] DEBUG [UsersService] - Schema validation passed for user: octo-cat

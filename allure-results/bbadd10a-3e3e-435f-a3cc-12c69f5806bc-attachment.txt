@@ -1,0 +1,2 @@
+[2026-06-05 18:49:03] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/repos/octocat/testing.spec-core_repo
+[2026-06-05 18:49:03] INFO [ApiClient] - Resposta recebida: 404 https://api.github.com/repos/octocat/testing.spec-core_repo (197ms)

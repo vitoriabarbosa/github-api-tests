@@ -1,0 +1,2 @@
+[2026-06-05 19:15:30] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/octocat/repos
+[2026-06-05 19:15:30] INFO [ApiClient] - Resposta recebida: 200 https://api.github.com/users/octocat/repos (319ms)

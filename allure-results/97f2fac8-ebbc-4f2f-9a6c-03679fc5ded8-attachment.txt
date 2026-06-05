@@ -1,0 +1,2 @@
+[2026-06-05 18:49:05] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/user/repos
+[2026-06-05 18:49:06] INFO [ApiClient] - Resposta recebida: 200 https://api.github.com/user/repos (1100ms)
