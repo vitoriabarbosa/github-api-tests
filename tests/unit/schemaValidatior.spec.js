@@ -1,4 +1,3 @@
-// tests/unit/schemaValidation.spec.js (versão simplificada)
 const { test, expect } = require('@playwright/test')
 const ServiceFactory = require('../../core/serviceFactory')
 const SchemaValidator = require('../../core/schemaValidator')
