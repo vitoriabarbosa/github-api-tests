@@ -1,2 +1,0 @@
-[2026-06-05 19:15:28] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/search/repositories
-[2026-06-05 19:15:30] INFO [ApiClient] - Resposta recebida: 200 https://api.github.com/search/repositories (2157ms)

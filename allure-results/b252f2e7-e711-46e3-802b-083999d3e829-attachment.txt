@@ -1,3 +1,0 @@
-[2026-06-05 18:49:19] DEBUG [UsersService] - Buscando usuário: invalid_user_12345
-[2026-06-05 18:49:19] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/users/invalid_user_12345
-[2026-06-05 18:49:19] INFO [ApiClient] - Resposta recebida: 404 https://api.github.com/users/invalid_user_12345 (345ms)
