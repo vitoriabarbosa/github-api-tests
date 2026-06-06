@@ -46,7 +46,7 @@ test.describe('Repos API Tests', () => {
         })
     })
 
-    test('T010 - Listar repositórios com sucesso', async ({ request }) => {
+    test('T018 - Listar repositórios com sucesso', async ({ request }) => {
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -58,7 +58,7 @@ test.describe('Repos API Tests', () => {
         assertions.assertOwner(body, user)
     })
 
-    test('T011 - Validar estrutura da resposta', async ({ request }) => {
+    test('T019 - Validar estrutura da resposta', async ({ request }) => {
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -68,7 +68,7 @@ test.describe('Repos API Tests', () => {
         assertions.assertStatus(response, 200)
     })
 
-    test('T012 - Usuário inexistente', async ({ request }) => {
+    test('T020 - Usuário inexistente', async ({ request }) => {
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -81,7 +81,7 @@ test.describe('Repos API Tests', () => {
         assertions.assertNotFound(body)
     })
 
-    test('T015 - Listar meus repositórios (autenticado)', async ({ request }) => {
+    test('T021 - Listar meus repositórios (autenticado)', async ({ request }) => {
         const hasToken = !!testContext.getGlobal('token')
         const isCI = process.env.GITHUB_ACTIONS === 'true'
         test.skip(
