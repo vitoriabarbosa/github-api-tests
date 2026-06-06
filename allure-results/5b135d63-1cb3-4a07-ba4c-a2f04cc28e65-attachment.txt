@@ -1,2 +1,0 @@
-[2026-06-06 12:37:17] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/repos/octocat/Hello-World/issues
-[2026-06-06 12:37:18] INFO [ApiClient] - Resposta recebida: 200 https://api.github.com/repos/octocat/Hello-World/issues (523ms)

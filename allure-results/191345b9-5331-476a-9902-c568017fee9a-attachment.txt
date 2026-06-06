@@ -1,2 +1,0 @@
-[2026-06-06 12:37:17] INFO [ApiClient] - Requisicao iniciada: GET https://api.github.com/repos/invalid_owner_12345/Hello-World
-[2026-06-06 12:37:17] INFO [ApiClient] - Resposta recebida: 404 https://api.github.com/repos/invalid_owner_12345/Hello-World (252ms)
