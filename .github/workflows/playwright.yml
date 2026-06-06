@@ -36,7 +36,7 @@ jobs:
 
     - name: Executar testes de API
       env:
-        GITHUB_TOKEN: github_pat_xxxxxxxxxxxxxxx
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
       run: npx playwright test
 
     - name: Upload de Relatórios e Evidências (Artifacts)

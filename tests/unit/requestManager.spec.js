@@ -56,17 +56,22 @@ test.describe('RequestManager', () => {
     });
 
     test('deve adicionar token na criação', () => {
+        const originalToken = process.env.GITHUB_TOKEN;
+        delete process.env.GITHUB_TOKEN;
+
         const rm = new RequestManager(
             mockRequest,
             'https://api.github.com',
             {
-                authToken: 'github_pat_xxxxxxxxxxxxxxx'
+                authToken: 'fake-token'
             }
         );
 
         expect(
             rm.getHeaders().Authorization
-        ).toBe('Bearer github_pat_xxxxxxxxxxxxxxx');
+        ).toBe('Bearer fake-token');
+
+        process.env.GITHUB_TOKEN = originalToken;
     });
 
     test('deve atualizar token com setAuthToken', () => {
