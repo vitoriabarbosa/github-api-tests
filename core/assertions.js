@@ -4,6 +4,9 @@ class Assertions {
     assertStatus(response, expectedStatus) {
         expect(response.status()).toBe(expectedStatus)
     }
+    assertContentTypeSoft(response, type = 'application/json') {
+        expect.soft(response.headers()['content-type']).toContain(type)
+    }
     assertContentType(response, type = 'application/json') {
         expect(response.headers()['content-type']).toContain(type)
     }
