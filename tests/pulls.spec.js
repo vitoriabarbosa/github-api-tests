@@ -16,7 +16,7 @@ test.describe('Pulls API Tests', () => {
     })
 
     dynamicCases.issues_pulls_filters.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@pulls'] }, async ({ request }) => {
             const service = serviceFactory.getPullsService(request)
             const response = await service.listPulls(testData.owner, testData.repo, scenario.state)
 
@@ -29,7 +29,7 @@ test.describe('Pulls API Tests', () => {
         })
     })
 
-    test('T001 - Pull Requests open', async ({ request }) => {
+    test('T001 - Pull Requests open', { tag: ['@smoke', '@alta', '@pulls'] }, async ({ request }) => {
         const service = serviceFactory.getPullsService(request)
         const assertions = new Assertions()
 
@@ -40,7 +40,7 @@ test.describe('Pulls API Tests', () => {
         body.forEach((pr) => expect(pr.state).toBe('open'))
     })
 
-    test('T002 - Pull Requests closed', async ({ request }) => {
+    test('T002 - Pull Requests closed', { tag: ['@funcional', '@alta', '@pulls'] }, async ({ request }) => {
         const service = serviceFactory.getPullsService(request)
         const assertions = new Assertions()
 

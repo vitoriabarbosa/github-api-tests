@@ -8,6 +8,25 @@
   },
   "scripts": {
     "test": "playwright test && node generate-log-report.js",
+
+    "test:usuarios": "playwright test --grep @usuarios && node generate-log-report.js",
+    "test:repositorios": "playwright test --grep @repositorios && node generate-log-report.js",
+    "test:issues": "playwright test --grep @issues && node generate-log-report.js",
+    "test:pulls": "playwright test --grep @pulls && node generate-log-report.js",
+    "test:commits": "playwright test --grep @commits && node generate-log-report.js",
+    "test:filtros": "playwright test --grep @filtros && node generate-log-report.js",
+    "test:nucleo": "playwright test --grep @nucleo && node generate-log-report.js",
+
+    "test:smoke": "playwright test --grep @smoke && node generate-log-report.js",
+    "test:funcional": "playwright test --grep @funcional && node generate-log-report.js",
+    "test:regressao": "playwright test --grep @regressao && node generate-log-report.js",
+    "test:integracao": "playwright test --grep @integracao && node generate-log-report.js",
+    "test:unidade": "playwright test tests/unit/ && node generate-log-report.js",
+
+    "test:alta": "playwright test --grep @alta && node generate-log-report.js",
+    "test:media": "playwright test --grep @media && node generate-log-report.js",
+    "test:baixa": "playwright test --grep @baixa && node generate-log-report.js",
+
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."

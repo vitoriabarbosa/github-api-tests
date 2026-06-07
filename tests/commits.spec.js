@@ -14,7 +14,7 @@ test.describe('Commits API Tests', () => {
         assertions = new Assertions()
     })
 
-    test('T013 - Listar commits de um repositório', async () => {
+    test('T013 - Listar commits de um repositório', { tag: ['@smoke', '@alta', '@commits'] }, async () => {
         const service = serviceFactory.getCommitsService()
 
         const response = await service.listCommits(testData.owner, testData.repo)
@@ -22,7 +22,7 @@ test.describe('Commits API Tests', () => {
         assertions.assertStatus(response, 200)
     })
 
-    test('T014 - Validar tratamento de erros para repositório inexistente', async ({ request }) => {
+    test('T014 - Validar tratamento de erros para repositório inexistente', { tag: ['@funcional', '@alta', '@commits'] }, async ({ request }) => {
         const service = serviceFactory.getCommitsService()
         const response = await service.listCommits(testData.invalidOwner, testData.repo)
         const body = await response.json()

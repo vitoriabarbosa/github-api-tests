@@ -31,7 +31,7 @@ test.describe('Repos API Tests', () => {
     })
 
     dynamicCases.repos_scenarios.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@repositorios'] }, async ({ request }) => {
             const service = serviceFactory.getReposService(request)
             const response = await service.getRepo(scenario.owner, scenario.repo)
 
@@ -46,7 +46,7 @@ test.describe('Repos API Tests', () => {
         })
     })
 
-    test('T010 - Listar repositórios com sucesso', async ({ request }) => {
+    test('T010 - Listar repositórios com sucesso', { tag: ['@smoke', '@alta', '@repositorios'] }, async ({ request }) => {
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -58,7 +58,7 @@ test.describe('Repos API Tests', () => {
         assertions.assertOwner(body, user)
     })
 
-    test('T011 - Validar estrutura da resposta', async ({ request }) => {
+    test('T011 - Validar estrutura da resposta', { tag: ['@funcional', '@media', '@repositorios'] }, async ({ request }) => {
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -68,7 +68,7 @@ test.describe('Repos API Tests', () => {
         assertions.assertStatus(response, 200)
     })
 
-    test('T012 - Usuário inexistente', async ({ request }) => {
+    test('T012 - Usuário inexistente', { tag: ['@funcional', '@alta', '@repositorios'] }, async ({ request }) => {
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -81,7 +81,7 @@ test.describe('Repos API Tests', () => {
         assertions.assertNotFound(body)
     })
 
-    test('T015 - Listar meus repositórios (autenticado)', async ({ request }) => {
+    test('T015 - Listar meus repositórios (autenticado)', { tag: ['@integracao', '@media', '@repositorios'] }, async ({ request }) => {
         const hasToken = !!testContext.getGlobal('token')
         test.skip(
             !hasToken,
