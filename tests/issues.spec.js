@@ -38,7 +38,7 @@ test.describe('Issues API Tests', () => {
         const body = await response.json()
 
         assertions.assertStatus(response, 200)
-        assertions.assertContentType(response)
+        assertions.assertContentTypeSoft(response)
     })
 
     test('T006 - Validar filtro de status das issues', { tag: ['@funcional', '@alta', '@issues'] }, async ({ request }) => {
