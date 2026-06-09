@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "login",
+    "avatar_url",
+    "type",
+    "public_repos",
+    "followers"
+  ],
+  "properties": {
+    "login": {
+      "type": "string",
+      "example": "octocat"
+    },
+    "id": {
+      "type": "integer",
+      "format": "int64",
+      "example": 1
+    },
+    "avatar_url": {
+      "type": "string",
+      "format": "uri",
+      "example": "https://github.com/images/error/octocat_happy.gif"
+    },
+    "type": {
+      "type": "string",
+      "example": "User"
+    },
+    "public_repos": {
+      "type": "integer",
+      "example": 2
+    },
+    "followers": {
+      "type": "integer",
+      "example": 20
+    }
+  }
+}

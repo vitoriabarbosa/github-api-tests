@@ -1,0 +1,225 @@
+{
+  "timestamp": "2026-06-05T22:17:41.173Z",
+  "comparisons": {
+    "users": {
+      "hasCurrent": true,
+      "hasAuto": true,
+      "autoSchemaFile": "users.schema.auto.json",
+      "differences": {
+        "required": {
+          "onlyInCurrent": [],
+          "onlyInAuto": [
+            "events_url",
+            "followers_url",
+            "following_url",
+            "gists_url",
+            "gravatar_id",
+            "html_url",
+            "node_id",
+            "organizations_url",
+            "received_events_url",
+            "repos_url",
+            "site_admin",
+            "starred_url",
+            "subscriptions_url",
+            "url",
+            "bio",
+            "blog",
+            "company",
+            "email",
+            "following",
+            "hireable",
+            "location",
+            "name",
+            "public_gists",
+            "created_at",
+            "updated_at",
+            "collaborators",
+            "disk_usage",
+            "owned_private_repos",
+            "private_gists",
+            "total_private_repos",
+            "two_factor_authentication"
+          ]
+        }
+      }
+    },
+    "repos": {
+      "hasCurrent": true,
+      "hasAuto": true,
+      "autoSchemaFile": "repos.schema.auto.json",
+      "differences": {
+        "required": {
+          "onlyInCurrent": [],
+          "onlyInAuto": [
+            "archive_url",
+            "assignees_url",
+            "blobs_url",
+            "branches_url",
+            "collaborators_url",
+            "comments_url",
+            "commits_url",
+            "compare_url",
+            "contents_url",
+            "contributors_url",
+            "deployments_url",
+            "description",
+            "downloads_url",
+            "events_url",
+            "fork",
+            "forks_url",
+            "git_commits_url",
+            "git_refs_url",
+            "git_tags_url",
+            "hooks_url",
+            "node_id",
+            "issue_comment_url",
+            "issue_events_url",
+            "issues_url",
+            "keys_url",
+            "labels_url",
+            "languages_url",
+            "merges_url",
+            "milestones_url",
+            "notifications_url",
+            "pulls_url",
+            "releases_url",
+            "stargazers_url",
+            "statuses_url",
+            "subscribers_url",
+            "subscription_url",
+            "tags_url",
+            "teams_url",
+            "trees_url",
+            "url",
+            "clone_url",
+            "default_branch",
+            "forks",
+            "forks_count",
+            "git_url",
+            "has_downloads",
+            "has_issues",
+            "has_projects",
+            "has_wiki",
+            "has_pages",
+            "homepage",
+            "language",
+            "archived",
+            "disabled",
+            "mirror_url",
+            "open_issues",
+            "open_issues_count",
+            "license",
+            "pushed_at",
+            "size",
+            "ssh_url",
+            "stargazers_count",
+            "svn_url",
+            "watchers",
+            "watchers_count",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      }
+    },
+    "issues": {
+      "hasCurrent": true,
+      "hasAuto": true,
+      "autoSchemaFile": "issues.schema.auto.json",
+      "differences": {
+        "required": {
+          "onlyInCurrent": [],
+          "onlyInAuto": [
+            "assignee",
+            "closed_at",
+            "comments",
+            "comments_url",
+            "events_url",
+            "html_url",
+            "node_id",
+            "labels",
+            "labels_url",
+            "milestone",
+            "number",
+            "repository_url",
+            "locked",
+            "url",
+            "user",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      }
+    },
+    "pulls": {
+      "hasCurrent": true,
+      "hasAuto": true,
+      "autoSchemaFile": "pulls.schema.auto.json",
+      "differences": {
+        "required": {
+          "onlyInCurrent": [],
+          "onlyInAuto": [
+            "_links",
+            "assignee",
+            "labels",
+            "base",
+            "body",
+            "closed_at",
+            "comments_url",
+            "commits_url",
+            "created_at",
+            "diff_url",
+            "head",
+            "html_url",
+            "node_id",
+            "issue_url",
+            "merge_commit_sha",
+            "merged_at",
+            "milestone",
+            "patch_url",
+            "review_comment_url",
+            "review_comments_url",
+            "statuses_url",
+            "locked",
+            "updated_at",
+            "url",
+            "user",
+            "author_association",
+            "auto_merge",
+            "additions",
+            "changed_files",
+            "comments",
+            "commits",
+            "deletions",
+            "mergeable",
+            "mergeable_state",
+            "merged",
+            "maintainer_can_modify",
+            "merged_by",
+            "review_comments"
+          ]
+        }
+      }
+    },
+    "commits": {
+      "hasCurrent": true,
+      "hasAuto": true,
+      "autoSchemaFile": "commits.schema.auto.json",
+      "differences": {
+        "required": {
+          "onlyInCurrent": [],
+          "onlyInAuto": [
+            "url",
+            "node_id",
+            "html_url",
+            "comments_url",
+            "author",
+            "committer",
+            "parents"
+          ]
+        }
+      }
+    }
+  }
+}

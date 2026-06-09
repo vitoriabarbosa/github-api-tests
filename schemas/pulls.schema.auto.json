@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "number",
+    "state",
+    "title"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "int64",
+      "example": 1
+    },
+    "number": {
+      "description": "Number uniquely identifying the pull request within its repository.",
+      "example": 42,
+      "type": "integer"
+    },
+    "state": {
+      "description": "State of this Pull Request. Either `open` or `closed`.",
+      "enum": [
+        "open",
+        "closed"
+      ],
+      "example": "open",
+      "type": "string"
+    },
+    "title": {
+      "description": "The title of the pull request.",
+      "example": "Amazing new feature",
+      "type": "string"
+    }
+  }
+}

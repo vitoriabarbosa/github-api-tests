@@ -30,13 +30,17 @@
     "report": "allure serve allure-results",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "schemas:fetch": "node scripts/fetchSchemas.js",
+    "schemas:validate": "playwright test tests/unit/schemaValidation.spec.js",
+    "schemas:update": "npm run schemas:fetch && npm run schemas:validate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "ajv-formats": "^3.0.1",
     "allure-commandline": "^2.42.0",
     "allure-playwright": "^3.9.0",
     "eslint": "^10.4.0",
