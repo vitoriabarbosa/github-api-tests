@@ -16,7 +16,7 @@ test.describe('Issues API Tests', () => {
     })
 
     dynamicCases.issues_pulls_filters.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@issues'] }, async ({ request }) => {
             const service = serviceFactory.getIssuesService(request)
             const response = await service.listIssues(testData.owner, testData.repo, scenario.state)
 
@@ -30,7 +30,7 @@ test.describe('Issues API Tests', () => {
         })
     })
 
-    test('T005 - Validar listagem geral de issues', async ({ request }) => {
+    test('T005 - Validar listagem geral de issues', { tag: ['@smoke', '@alta', '@issues'] }, async ({ request }) => {
         const service = serviceFactory.getIssuesService(request)
         const assertions = new Assertions()
 
@@ -41,7 +41,7 @@ test.describe('Issues API Tests', () => {
         assertions.assertContentType(response)
     })
 
-    test('T006 - Validar filtro de status das issues', async ({ request }) => {
+    test('T006 - Validar filtro de status das issues', { tag: ['@funcional', '@alta', '@issues'] }, async ({ request }) => {
         const service = serviceFactory.getIssuesService(request)
         const assertions = new Assertions()
 

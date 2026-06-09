@@ -14,7 +14,7 @@ test.describe('Filters API Tests', () => {
         assertions = new Assertions()
     })
 
-    test('T003 - Teste de Validação de Parametrização de Linguagem', async ({ request }) => {
+    test('T003 - Teste de Validação de Parametrização de Linguagem', { tag: ['@funcional', '@media', '@filtros'] }, async ({ request }) => {
         const service = serviceFactory.getReposService(request)
 
         const response = await service.searchByLanguage(testData.searchLanguage)
@@ -22,7 +22,7 @@ test.describe('Filters API Tests', () => {
         assertions.assertStatus(response, 200)
     })
 
-    test('T004 - Teste de Limitação de Resultados por Página', async ({ request }) => {
+    test('T004 - Teste de Limitação de Resultados por Página', { tag: ['@funcional', '@media', '@filtros'] }, async ({ request }) => {
         const service = serviceFactory.getIssuesService(request)
 
         const response = await service.listIssues(
