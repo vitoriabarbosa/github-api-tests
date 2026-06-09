@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "full_name",
+    "private",
+    "html_url",
+    "owner"
+  ],
+  "properties": {
+    "id": {
+      "description": "Unique identifier of the repository",
+      "example": 42,
+      "type": "integer",
+      "format": "int64"
+    },
+    "name": {
+      "description": "The name of the repository.",
+      "type": "string",
+      "example": "Team Environment"
+    },
+    "full_name": {
+      "type": "string",
+      "example": "octocat/Hello-World"
+    },
+    "private": {
+      "description": "Whether the repository is private or public.",
+      "default": false,
+      "type": "boolean"
+    },
+    "html_url": {
+      "type": "string",
+      "format": "uri",
+      "example": "https://github.com/octocat/Hello-World"
+    },
+    "owner": {
+      "$ref": "#/components/schemas/simple-user"
+    }
+  }
+}
