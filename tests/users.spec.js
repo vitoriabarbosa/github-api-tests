@@ -1,88 +1,201 @@
-const { test } = require('@playwright/test')
-const ServiceFactory = require('../core/serviceFactory')
-const Assertions = require('../core/assertions')
-const testData = require('../fixtures/testData')
-const testContext = require('../core/testContext')
-const dynamicCases = require('../fixtures/dynamic_test_cases.json')
+const { test, expect } = require('@playwright/test');
+const ServiceFactory = require('../core/serviceFactory');
+const Assertions = require('../core/assertions');
+const testData = require('../fixtures/testData');
+const testContext = require('../core/testContext');
+const dynamicCases = require('../fixtures/dynamic_test_cases.json');
 
 test.describe('Users API Tests', () => {
-    let serviceFactory
-    let assertions
+    let serviceFactory;
+    let assertions;
 
     test.beforeAll(() => {
         if (process.env.GITHUB_TOKEN) {
-            testContext.setGlobal('token', process.env.GITHUB_TOKEN)
+            testContext.setGlobal(
+                'token',
+                process.env.GITHUB_TOKEN
+            );
         }
-        testContext.setSuite('validUser', testData.validUser)
-    })
+
+        testContext.setSuite(
+            'validUser',
+            testData.validUser
+        );
+    });
 
     test.beforeEach(async ({ request }) => {
-        testContext.clearTest()
+        testContext.clearTest();
+
         serviceFactory = new ServiceFactory(request, {
             baseURL: 'https://api.github.com'
-        })
-        assertions = new Assertions()
+        });
 
-        const token = testContext.getGlobal('token')
+        assertions = new Assertions();
+
+        const token = testContext.getGlobal('token');
+
         if (token) {
-            serviceFactory.setAuthToken(token)
+            serviceFactory.setAuthToken(token);
         }
-    })
+    });
 
     dynamicCases.users_scenarios.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@usuarios'] }, async () => {
-            const usersService = serviceFactory.getUsersService()
-            const response = await usersService.getUser(scenario.username)
+        test(
+            `${scenario.id} - ${scenario.description}`,
+            { tag: [...scenario.tags, '@usuarios'] },
+            async () => {
+                const usersService =
+                    serviceFactory.getUsersService();
 
-            assertions.assertStatus(response, scenario.expected_status)
+                const response =
+                    await usersService.getUser(
+                        scenario.username
+                    );
 
-            if (scenario.expected_status === 200) {
-                assertions.assertContentType(response)
-            } else if (scenario.expected_status === 404) {
-                const body = await response.json()
-                assertions.assertNotFound(body)
+                assertions.assertStatus(
+                    response,
+                    scenario.expected_status
+                );
+
+                if (
+                    scenario.expected_status === 200
+                ) {
+                    assertions.assertContentType(
+                        response
+                    );
+                } else if (
+                    scenario.expected_status === 404
+                ) {
+                    const body =
+                        await response.json();
+
+                    assertions.assertNotFound(body);
+                }
             }
-        })
-    })
+        );
+    });
 
-    test('T007 - Validar busca de usuário válido', { tag: ['@smoke', '@alta', '@usuarios'] }, async () => {
-        const usersService = serviceFactory.getUsersService()
+    test(
+        'T007 - Validar busca de usuário válido',
+        {
+            tag: [
+                '@smoke',
+                '@alta',
+                '@usuarios'
+            ]
+        },
+        async () => {
+            const usersService =
+                serviceFactory.getUsersService();
 
-        const user = testContext.getSuite('validUser')
-        const response = await usersService.getUser(user)
-        const body = await response.json()
+            const user =
+                testContext.getSuite('validUser');
 
-        assertions.assertStatus(response, 200)
-        assertions.assertContentType(response)
-    })
+            const response =
+                await usersService.getUser(user);
 
-    test('T008 - Validar comportamento para usuário inexistente', { tag: ['@funcional', '@alta', '@usuarios'] }, async () => {
-        const usersService = serviceFactory.getUsersService()
+            const body = await response.json();
 
-        const response = await usersService.getUser(testData.invalidUser)
-        const body = await response.json()
+            assertions.assertStatus(response, 200);
+            assertions.assertContentType(response);
 
-        assertions.assertStatus(response, 404)
-        assertions.assertNotFound(body)
-    })
+            expect(body.login.toLowerCase())
+                .toBe(user.toLowerCase());
 
-    test('T009 - Validar estrutura da resposta do usuário', { tag: ['@funcional', '@media', '@usuarios'] }, async ({ request }) => {
-        const service = serviceFactory.getUsersService(request)
-        const assertions = new Assertions()
+            expect(body)
+                .toHaveProperty('id');
 
-        const user = testContext.getSuite('validUser')
-        const response = await service.getUser(user)
-        const body = await response.json()
+            expect(body)
+                .toHaveProperty('login');
+        }
+    );
 
-        assertions.assertStatus(response, 200)
-        assertions.assertContentType(response)
-    })
+    test(
+        'T008 - Validar comportamento para usuário inexistente',
+        {
+            tag: [
+                '@funcional',
+                '@alta',
+                '@usuarios'
+            ]
+        },
+        async () => {
+            const usersService =
+                serviceFactory.getUsersService();
+
+            const response =
+                await usersService.getUser(
+                    testData.invalidUser
+                );
+
+            const body = await response.json();
+
+            assertions.assertStatus(response, 404);
+            assertions.assertNotFound(body);
+        }
+    );
+
+    test(
+        'T009 - Validar estrutura da resposta do usuário',
+        {
+            tag: [
+                '@funcional',
+                '@media',
+                '@usuarios'
+            ]
+        },
+        async () => {
+            const service =
+                serviceFactory.getUsersService();
+
+            const user =
+                testContext.getSuite('validUser');
+
+            const response =
+                await service.getUser(user);
+
+            const body = await response.json();
+
+            assertions.assertStatus(response, 200);
+            assertions.assertContentType(response);
+
+            expect(body)
+                .toHaveProperty('id');
+
+            expect(body)
+                .toHaveProperty('login');
+
+            expect(body)
+                .toHaveProperty('type');
+
+            expect(body)
+                .toHaveProperty('html_url');
+
+            expect(body)
+                .toHaveProperty('avatar_url');
+
+            expect(typeof body.id)
+                .toBe('number');
+
+            expect(typeof body.login)
+                .toBe('string');
+
+            expect(typeof body.type)
+                .toBe('string');
+
+            expect(typeof body.html_url)
+                .toBe('string');
+
+            expect(typeof body.avatar_url)
+                .toBe('string');
+        }
+    );
 
     test.afterEach(() => {
-        serviceFactory.cleanup()
-    })
+        serviceFactory.cleanup();
+    });
 
     test.afterAll(() => {
-        testContext.clearSuite()
-    })
-})
+        testContext.clearSuite();
+    });
+});
