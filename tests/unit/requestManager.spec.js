@@ -1,10 +1,10 @@
-const { test, expect, beforeEach } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const RequestManager = require('../../core/requestManager');
 
-test.describe('RequestManager', () => {
+test.describe('RequestManager Tests', () => {
     let mockRequest;
 
-    beforeEach(() => {
+    test.beforeEach(() => {
         RequestManager.cleanupAll();
 
         mockRequest = {
@@ -23,21 +23,45 @@ test.describe('RequestManager', () => {
         };
     });
 
-    test('deve manter comportamento singleton', () => {
-        const rm1 = RequestManager.getInstance(
-            mockRequest,
-            'https://api.github.com'
-        );
+    test('RequestManager deve ser Singleton por request', { tag: ['@unidade', '@alta', '@nucleo'] }, async ({ request }) => {
+        const baseURL = 'https://api.github.com';
 
-        const rm2 = RequestManager.getInstance(
-            mockRequest,
-            'https://api.github.com'
-        );
+        const rm1 = RequestManager.getInstance(request, baseURL);
+        const rm2 = RequestManager.getInstance(request, baseURL);
 
         expect(rm1).toBe(rm2);
     });
 
-    test('deve configurar headers padrão', () => {
+    test('RequestManager deve manter headers configurados', () => {
+        const rm = new RequestManager(
+            mockRequest,
+            'https://api.github.com',
+            {
+                headers: {
+                    'X-Custom': 'test'
+                }
+            }
+        );
+
+        expect(
+            rm.getHeaders()['X-Custom']
+        ).toBe('test');
+    });
+
+    test('RequestManager deve permitir setAuthToken', () => {
+        const rm = new RequestManager(
+            mockRequest,
+            'https://api.github.com'
+        );
+
+        rm.setAuthToken('github_pat_newtoken');
+
+        expect(
+            rm.getHeaders().Authorization
+        ).toBe('Bearer github_pat_newtoken');
+    });
+
+    test('deve conter headers padrão', () => {
         const rm = new RequestManager(
             mockRequest,
             'https://api.github.com'
@@ -102,17 +126,18 @@ test.describe('RequestManager', () => {
             rm.getHeaders().Authorization
         ).toBeUndefined();
     });
+
     test('deve executar GET corretamente', async () => {
         const responseMock = {
             status: () => 200
         };
 
         mockRequest.get = async (url, options) => {
-            expect(url).toBe(
-                'https://api.github.com/users'
-            );
+            expect(url)
+                .toBe('https://api.github.com/users');
 
-            expect(options.params.page).toBe(1);
+            expect(options.params.page)
+                .toBe(1);
 
             return responseMock;
         };
@@ -129,6 +154,7 @@ test.describe('RequestManager', () => {
 
         expect(response).toBe(responseMock);
     });
+
     test('constructor deve retornar instancia existente', () => {
         const request = {};
 
@@ -144,6 +170,7 @@ test.describe('RequestManager', () => {
 
         expect(rm1).toBe(rm2);
     });
+
     test('deve mesclar headers customizados', () => {
         const rm = new RequestManager(
             {},
@@ -159,7 +186,8 @@ test.describe('RequestManager', () => {
             rm.getHeaders()['X-Custom']
         ).toBe('teste');
     });
-    test('deve executar post', async () => {
+
+    test('deve executar POST', async () => {
         const responseMock = {
             status: () => 201
         };
@@ -189,7 +217,7 @@ test.describe('RequestManager', () => {
         expect(response).toBe(responseMock);
     });
 
-    test('deve executar put', async () => {
+    test('deve executar PUT', async () => {
         const responseMock = {
             status: () => 200
         };
@@ -216,7 +244,7 @@ test.describe('RequestManager', () => {
         expect(response).toBe(responseMock);
     });
 
-    test('deve executar delete', async () => {
+    test('deve executar DELETE', async () => {
         const responseMock = {
             status: () => 204
         };
@@ -230,13 +258,11 @@ test.describe('RequestManager', () => {
             'https://api.github.com'
         );
 
-        const response = await rm.delete(
-            '/users/1'
-        );
+        const response = await rm.delete('/users/1');
 
         expect(response).toBe(responseMock);
     });
-    
+
     test('getHeaders deve retornar cópia', () => {
         const rm = new RequestManager(
             mockRequest,

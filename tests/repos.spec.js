@@ -31,7 +31,7 @@ test.describe('Repos API Tests', () => {
     })
 
     dynamicCases.repos_scenarios.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@repositorios'] }, async ({ request }) => {
             const service = serviceFactory.getReposService(request)
             const response = await service.getRepo(scenario.owner, scenario.repo)
 
@@ -46,7 +46,11 @@ test.describe('Repos API Tests', () => {
         })
     })
 
+<<<<<<< HEAD
     test('T018 - Listar repositórios com sucesso', async ({ request }) => {
+=======
+    test('T010 - Listar repositórios com sucesso', { tag: ['@smoke', '@alta', '@repositorios'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -58,7 +62,11 @@ test.describe('Repos API Tests', () => {
         assertions.assertOwner(body, user)
     })
 
+<<<<<<< HEAD
     test('T019 - Validar estrutura da resposta', async ({ request }) => {
+=======
+    test('T011 - Validar estrutura da resposta', { tag: ['@funcional', '@media', '@repositorios'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -68,7 +76,11 @@ test.describe('Repos API Tests', () => {
         assertions.assertStatus(response, 200)
     })
 
+<<<<<<< HEAD
     test('T020 - Usuário inexistente', async ({ request }) => {
+=======
+    test('T012 - Usuário inexistente', { tag: ['@funcional', '@alta', '@repositorios'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const service = serviceFactory.getReposService(request)
         const assertions = new Assertions()
 
@@ -81,7 +93,11 @@ test.describe('Repos API Tests', () => {
         assertions.assertNotFound(body)
     })
 
+<<<<<<< HEAD
     test('T021 - Listar meus repositórios (autenticado)', async ({ request }) => {
+=======
+    test('T015 - Listar meus repositórios (autenticado)', { tag: ['@integracao', '@media', '@repositorios'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const hasToken = !!testContext.getGlobal('token')
         const isCI = process.env.GITHUB_ACTIONS === 'true'
         test.skip(

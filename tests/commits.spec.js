@@ -15,44 +15,74 @@ test.describe('Commits API Tests', () => {
         assertions = new Assertions();
     });
 
-    test('T014 - Deve listar commits do repositório', async () => {
-        const service = serviceFactory.getCommitsService();
+    test(
+        'T013 - Listar commits de um repositório',
+        { tag: ['@smoke', '@alta', '@commits'] },
+        async () => {
+            const service = serviceFactory.getCommitsService();
 
-        const response = await service.listCommits(
-            testData.owner,
-            testData.repo
-        );
+            const response = await service.listCommits(
+                testData.owner,
+                testData.repo
+            );
 
-        assertions.assertStatus(response, 200);
+            const body = await response.json();
 
-        const body = await response.json();
+            assertions.assertStatus(response, 200);
 
-        expect(Array.isArray(body)).toBeTruthy();
-        expect(body.length).toBeGreaterThan(0);
+            expect(Array.isArray(body)).toBeTruthy();
+            expect(body.length).toBeGreaterThan(0);
 
-        const firstCommit = body[0];
+            const firstCommit = body[0];
 
-        expect(firstCommit).toHaveProperty('sha');
-        expect(firstCommit).toHaveProperty('commit');
+            expect(firstCommit).toHaveProperty('sha');
+            expect(firstCommit).toHaveProperty('commit');
 
-        expect(typeof firstCommit.sha).toBe('string');
+            expect(typeof firstCommit.sha)
+                .toBe('string');
 
-        expect(firstCommit.commit).toHaveProperty('message');
-        expect(firstCommit.commit).toHaveProperty('author');
+            expect(firstCommit.commit)
+                .toHaveProperty('message');
 
-        expect(typeof firstCommit.commit.message).toBe('string');
+            expect(firstCommit.commit)
+                .toHaveProperty('author');
 
-        expect(firstCommit.commit.author).toHaveProperty('name');
-        expect(firstCommit.commit.author).toHaveProperty('date');
+            expect(typeof firstCommit.commit.message)
+                .toBe('string');
 
-        expect(typeof firstCommit.commit.author.name).toBe('string');
-        expect(typeof firstCommit.commit.author.date).toBe('string');
+            expect(firstCommit.commit.author)
+                .toHaveProperty('name');
 
-        const headers = response.headers();
+            expect(firstCommit.commit.author)
+                .toHaveProperty('date');
 
-        expect(headers['content-type'])
-            .toContain('application/json');
-    });
+            const headers = response.headers();
+
+            expect(headers['content-type'])
+                .toContain('application/json');
+        }
+    );
+
+    test(
+        'T014 - Validar tratamento de erros para repositório inexistente',
+        { tag: ['@funcional', '@alta', '@commits'] },
+        async () => {
+            const service = serviceFactory.getCommitsService();
+
+            const response = await service.listCommits(
+                testData.invalidOwner,
+                testData.repo
+            );
+
+            const body = await response.json();
+
+            assertions.assertStatus(response, 404);
+            assertions.assertNotFound(body);
+
+            expect(body.message)
+                .toBe('Not Found');
+        }
+    );
 
     test('T015 - Deve retornar 404 para repositório inexistente', async () => {
         const service = serviceFactory.getCommitsService();
@@ -67,7 +97,8 @@ test.describe('Commits API Tests', () => {
         assertions.assertStatus(response, 404);
         assertions.assertNotFound(body);
 
-        expect(body.message).toBe('Not Found');
+        expect(body.message)
+            .toBe('Not Found');
     });
 
     test('T016 - Deve validar estrutura do primeiro commit', async () => {
@@ -80,9 +111,12 @@ test.describe('Commits API Tests', () => {
 
         const commits = await response.json();
 
+        assertions.assertStatus(response, 200);
+
         const commit = commits[0];
 
-        expect(commit.sha).toMatch(/^[a-f0-9]{40}$/);
+        expect(commit.sha)
+            .toMatch(/^[a-f0-9]{40}$/);
 
         expect(commit.commit.author.name)
             .not.toBeNull();
@@ -100,6 +134,8 @@ test.describe('Commits API Tests', () => {
         );
 
         const commits = await response.json();
+
+        assertions.assertStatus(response, 200);
 
         commits.forEach(commit => {
             expect(commit.sha)

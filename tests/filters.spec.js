@@ -14,8 +14,13 @@ test.describe('Filters API Tests', () => {
         assertions = new Assertions()
     })
 
+<<<<<<< HEAD
     test('T007 - Deve buscar repositórios filtrados por linguagem', async () => {
         const service = serviceFactory.getReposService()
+=======
+    test('T003 - Teste de Validação de Parametrização de Linguagem', { tag: ['@funcional', '@media', '@filtros'] }, async ({ request }) => {
+        const service = serviceFactory.getReposService(request)
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
 
         const response = await service.searchByLanguage(
             testData.searchLanguage
@@ -41,8 +46,13 @@ test.describe('Filters API Tests', () => {
         expect(body.total_count).toBeGreaterThan(0)
     })
 
+<<<<<<< HEAD
     test('T008 - Deve respeitar limite de resultados por página', async () => {
         const service = serviceFactory.getIssuesService()
+=======
+    test('T004 - Teste de Limitação de Resultados por Página', { tag: ['@funcional', '@media', '@filtros'] }, async ({ request }) => {
+        const service = serviceFactory.getIssuesService(request)
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
 
         const response = await service.listIssues(
             testData.owner,

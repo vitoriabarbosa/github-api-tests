@@ -30,7 +30,7 @@ test.describe('Users API Tests', () => {
     })
 
     dynamicCases.users_scenarios.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async () => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@usuarios'] }, async () => {
             const usersService = serviceFactory.getUsersService()
             const response = await usersService.getUser(scenario.username)
 
@@ -45,7 +45,11 @@ test.describe('Users API Tests', () => {
         })
     })
 
+<<<<<<< HEAD
     test('T011 - Validar busca de usuário válido', async () => {
+=======
+    test('T007 - Validar busca de usuário válido', { tag: ['@smoke', '@alta', '@usuarios'] }, async () => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const usersService = serviceFactory.getUsersService()
 
         const user = testContext.getSuite('validUser')
@@ -56,7 +60,11 @@ test.describe('Users API Tests', () => {
         assertions.assertContentType(response)
     })
 
+<<<<<<< HEAD
     test('T012 - Validar comportamento para usuário inexistente', async () => {
+=======
+    test('T008 - Validar comportamento para usuário inexistente', { tag: ['@funcional', '@alta', '@usuarios'] }, async () => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const usersService = serviceFactory.getUsersService()
 
         const response = await usersService.getUser(testData.invalidUser)
@@ -66,7 +74,11 @@ test.describe('Users API Tests', () => {
         assertions.assertNotFound(body)
     })
 
+<<<<<<< HEAD
     test('T013 - Validar estrutura da resposta do usuário', async ({ request }) => {
+=======
+    test('T009 - Validar estrutura da resposta do usuário', { tag: ['@funcional', '@media', '@usuarios'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const service = serviceFactory.getUsersService(request)
         const assertions = new Assertions()
 

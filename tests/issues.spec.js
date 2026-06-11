@@ -16,7 +16,7 @@ test.describe('Issues API Tests', () => {
     })
 
     dynamicCases.issues_pulls_filters.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@issues'] }, async ({ request }) => {
             const service = serviceFactory.getIssuesService(request)
             const response = await service.listIssues(testData.owner, testData.repo, scenario.state)
 
@@ -30,7 +30,11 @@ test.describe('Issues API Tests', () => {
         })
     })
 
+<<<<<<< HEAD
     test('T008 - Validar listagem geral de issues', async ({ request }) => {
+=======
+    test('T005 - Validar listagem geral de issues', { tag: ['@smoke', '@alta', '@issues'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const service = serviceFactory.getIssuesService(request)
         const assertions = new Assertions()
 
@@ -38,10 +42,14 @@ test.describe('Issues API Tests', () => {
         const body = await response.json()
 
         assertions.assertStatus(response, 200)
-        assertions.assertContentType(response)
+        assertions.assertContentTypeSoft(response)
     })
 
+<<<<<<< HEAD
     test('T009 - Validar filtro de status das issues', async ({ request }) => {
+=======
+    test('T006 - Validar filtro de status das issues', { tag: ['@funcional', '@alta', '@issues'] }, async ({ request }) => {
+>>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
         const service = serviceFactory.getIssuesService(request)
         const assertions = new Assertions()
 

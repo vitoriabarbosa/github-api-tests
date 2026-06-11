@@ -16,7 +16,7 @@ test.describe('Pulls API Tests', () => {
     })
 
     dynamicCases.issues_pulls_filters.forEach((scenario) => {
-        test(`${scenario.id} - ${scenario.description}`, async ({ request }) => {
+        test(`${scenario.id} - ${scenario.description}`, { tag: [...scenario.tags, '@pulls'] }, async ({ request }) => {
             const service = serviceFactory.getPullsService(request)
             const response = await service.listPulls(testData.owner, testData.repo, scenario.state)
 
@@ -28,14 +28,10 @@ test.describe('Pulls API Tests', () => {
             }
         })
     })
-    test('T001 - Deve validar estrutura do Pull Request', async () => {
-        const service = serviceFactory.getPullsService()
 
-        const response = await service.listPulls(
-            testData.owner,
-            testData.repo,
-            'open'
-        )
+    test('T001 - Pull Requests open', { tag: ['@smoke', '@alta', '@pulls'] }, async ({ request }) => {
+        const service = serviceFactory.getPullsService(request)
+        const assertions = new Assertions()
 
         const body = await response.json()
 
@@ -56,13 +52,10 @@ test.describe('Pulls API Tests', () => {
             expect(typeof pr.state).toBe('string')
         }
     })
-    test('T002 - Deve validar dados do autor', async () => {
-        const service = serviceFactory.getPullsService()
 
-        const response = await service.listPulls(
-            testData.owner,
-            testData.repo
-        )
+    test('T002 - Pull Requests closed', { tag: ['@funcional', '@alta', '@pulls'] }, async ({ request }) => {
+        const service = serviceFactory.getPullsService(request)
+        const assertions = new Assertions()
 
         const body = await response.json()
 
