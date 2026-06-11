@@ -42,7 +42,16 @@ test.describe('Users API Tests', () => {
     dynamicCases.users_scenarios.forEach((scenario) => {
         test(
             `${scenario.id} - ${scenario.description}`,
-            { tag: [...scenario.tags, '@usuarios'] },
+            {
+                tag: [
+                    ...scenario.tags,
+                    '@usuarios',
+                    '@api',
+                    '@github',
+                    '@validacao',
+                    '@usuario'
+                ]
+            },
             async () => {
                 const usersService =
                     serviceFactory.getUsersService();
@@ -57,18 +66,12 @@ test.describe('Users API Tests', () => {
                     scenario.expected_status
                 );
 
-                if (
-                    scenario.expected_status === 200
-                ) {
-                    assertions.assertContentType(
-                        response
-                    );
-                } else if (
-                    scenario.expected_status === 404
-                ) {
-                    const body =
-                        await response.json();
+                if (scenario.expected_status === 200) {
+                    assertions.assertContentType(response);
+                }
 
+                if (scenario.expected_status === 404) {
+                    const body = await response.json();
                     assertions.assertNotFound(body);
                 }
             }
@@ -81,7 +84,10 @@ test.describe('Users API Tests', () => {
             tag: [
                 '@smoke',
                 '@alta',
-                '@usuarios'
+                '@usuarios',
+                '@consulta',
+                '@positivo',
+                '@api'
             ]
         },
         async () => {
@@ -116,7 +122,10 @@ test.describe('Users API Tests', () => {
             tag: [
                 '@funcional',
                 '@alta',
-                '@usuarios'
+                '@usuarios',
+                '@negativo',
+                '@404',
+                '@erro'
             ]
         },
         async () => {
@@ -141,7 +150,9 @@ test.describe('Users API Tests', () => {
             tag: [
                 '@funcional',
                 '@media',
-                '@usuarios'
+                '@usuarios',
+                '@schema',
+                '@contrato'
             ]
         },
         async () => {

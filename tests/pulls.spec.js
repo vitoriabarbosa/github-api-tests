@@ -19,7 +19,16 @@ test.describe('Pulls API Tests', () => {
     dynamicCases.issues_pulls_filters.forEach((scenario) => {
         test(
             `${scenario.id} - ${scenario.description}`,
-            { tag: [...scenario.tags, '@pulls'] },
+            {
+                tag: [
+                    ...scenario.tags,
+                    '@pulls',
+                    '@api',
+                    '@github',
+                    '@http',
+                    '@regressao'
+                ]
+            },
             async () => {
                 const service = serviceFactory.getPullsService();
 
@@ -38,8 +47,7 @@ test.describe('Pulls API Tests', () => {
                     const body = await response.json();
 
                     body.forEach(pr => {
-                        expect(pr.state)
-                            .toBe(scenario.state);
+                        expect(pr.state).toBe(scenario.state);
                     });
                 }
             }
@@ -48,7 +56,16 @@ test.describe('Pulls API Tests', () => {
 
     test(
         'T001 - Pull Requests open',
-        { tag: ['@smoke', '@alta', '@pulls'] },
+        {
+            tag: [
+                '@smoke',
+                '@alta',
+                '@pulls',
+                '@consulta',
+                '@api',
+                '@positivo'
+            ]
+        },
         async () => {
             const service = serviceFactory.getPullsService();
 
@@ -62,48 +79,39 @@ test.describe('Pulls API Tests', () => {
 
             assertions.assertStatus(response, 200);
 
-            expect(Array.isArray(body))
-                .toBeTruthy();
+            expect(Array.isArray(body)).toBeTruthy();
 
             if (body.length > 0) {
                 const pr = body[0];
 
-                expect(pr)
-                    .toHaveProperty('id');
+                expect(pr).toHaveProperty('id');
+                expect(pr).toHaveProperty('number');
+                expect(pr).toHaveProperty('title');
+                expect(pr).toHaveProperty('state');
+                expect(pr).toHaveProperty('user');
 
-                expect(pr)
-                    .toHaveProperty('number');
+                expect(typeof pr.id).toBe('number');
+                expect(typeof pr.number).toBe('number');
+                expect(typeof pr.title).toBe('string');
+                expect(typeof pr.state).toBe('string');
 
-                expect(pr)
-                    .toHaveProperty('title');
-
-                expect(pr)
-                    .toHaveProperty('state');
-
-                expect(pr)
-                    .toHaveProperty('user');
-
-                expect(typeof pr.id)
-                    .toBe('number');
-
-                expect(typeof pr.number)
-                    .toBe('number');
-
-                expect(typeof pr.title)
-                    .toBe('string');
-
-                expect(typeof pr.state)
-                    .toBe('string');
-
-                expect(pr.state)
-                    .toBe('open');
+                expect(pr.state).toBe('open');
             }
         }
     );
 
     test(
         'T002 - Pull Requests closed',
-        { tag: ['@funcional', '@alta', '@pulls'] },
+        {
+            tag: [
+                '@funcional',
+                '@alta',
+                '@pulls',
+                '@fechado',
+                '@api',
+                '@validacao'
+            ]
+        },
         async () => {
             const service = serviceFactory.getPullsService();
 
@@ -120,112 +128,141 @@ test.describe('Pulls API Tests', () => {
             if (body.length > 0) {
                 const pr = body[0];
 
-                expect(pr.user)
-                    .toHaveProperty('login');
+                expect(pr.user).toHaveProperty('login');
+                expect(pr.user).toHaveProperty('id');
 
-                expect(pr.user)
-                    .toHaveProperty('id');
+                expect(typeof pr.user.login).toBe('string');
+                expect(typeof pr.user.id).toBe('number');
 
-                expect(typeof pr.user.login)
-                    .toBe('string');
-
-                expect(typeof pr.user.id)
-                    .toBe('number');
-
-                expect(pr.state)
-                    .toBe('closed');
+                expect(pr.state).toBe('closed');
             }
         }
     );
 
-    test('T003 - Deve validar URLs do Pull Request', async () => {
-        const service = serviceFactory.getPullsService();
+    test(
+        'T003 - Deve validar URLs do Pull Request',
+        {
+            tag: [
+                '@url',
+                '@estrutura',
+                '@pulls',
+                '@validacao',
+                '@api'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getPullsService();
 
-        const response = await service.listPulls(
-            testData.owner,
-            testData.repo
-        );
+            const response = await service.listPulls(
+                testData.owner,
+                testData.repo
+            );
 
-        const body = await response.json();
+            const body = await response.json();
 
-        assertions.assertStatus(response, 200);
+            assertions.assertStatus(response, 200);
 
-        if (body.length > 0) {
-            const pr = body[0];
+            if (body.length > 0) {
+                const pr = body[0];
 
-            expect(pr.html_url)
-                .toContain('github.com');
-
-            expect(pr.url)
-                .toContain('api.github.com');
+                expect(pr.html_url).toContain('github.com');
+                expect(pr.url).toContain('api.github.com');
+            }
         }
-    });
+    );
 
-    test('T004 - Deve validar headers da resposta', async () => {
-        const service = serviceFactory.getPullsService();
+    test(
+        'T004 - Deve validar headers da resposta',
+        {
+            tag: [
+                '@headers',
+                '@http',
+                '@pulls',
+                '@api',
+                '@infra'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getPullsService();
 
-        const response = await service.listPulls(
-            testData.owner,
-            testData.repo
-        );
+            const response = await service.listPulls(
+                testData.owner,
+                testData.repo
+            );
 
-        assertions.assertStatus(response, 200);
+            assertions.assertStatus(response, 200);
 
-        const headers = response.headers();
+            const headers = response.headers();
 
-        expect(headers['content-type'])
-            .toContain('application/json');
+            expect(headers['content-type'])
+                .toContain('application/json');
 
-        expect(headers)
-            .toHaveProperty('x-ratelimit-limit');
-    });
+            expect(headers)
+                .toHaveProperty('x-ratelimit-limit');
+        }
+    );
 
-    test('T005 - Deve validar unicidade dos Pull Requests', async () => {
-        const service = serviceFactory.getPullsService();
+    test(
+        'T005 - Deve validar unicidade dos Pull Requests',
+        {
+            tag: [
+                '@dados',
+                '@integridade',
+                '@pulls',
+                '@qualidade',
+                '@api'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getPullsService();
 
-        const response = await service.listPulls(
-            testData.owner,
-            testData.repo
-        );
+            const response = await service.listPulls(
+                testData.owner,
+                testData.repo
+            );
 
-        const body = await response.json();
+            const body = await response.json();
 
-        assertions.assertStatus(response, 200);
+            assertions.assertStatus(response, 200);
 
-        const ids = body.map(pr => pr.id);
+            const ids = body.map(pr => pr.id);
+            const uniqueIds = [...new Set(ids)];
 
-        const uniqueIds = [...new Set(ids)];
+            expect(uniqueIds.length).toBe(ids.length);
+        }
+    );
 
-        expect(uniqueIds.length)
-            .toBe(ids.length);
-    });
+    test(
+        'T006 - Deve validar campos obrigatórios',
+        {
+            tag: [
+                '@schema',
+                '@contrato',
+                '@pulls',
+                '@api',
+                '@estrutura'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getPullsService();
 
-    test('T006 - Deve validar campos obrigatórios', async () => {
-        const service = serviceFactory.getPullsService();
+            const response = await service.listPulls(
+                testData.owner,
+                testData.repo
+            );
 
-        const response = await service.listPulls(
-            testData.owner,
-            testData.repo
-        );
+            const body = await response.json();
 
-        const body = await response.json();
+            assertions.assertStatus(response, 200);
 
-        assertions.assertStatus(response, 200);
-
-        body.forEach(pr => {
-            expect(pr.id)
-                .toBeDefined();
-
-            expect(pr.number)
-                .toBeDefined();
-
-            expect(pr.title)
-                .toBeDefined();
-
-            expect(pr.state)
-                .toBeDefined();
-        });
-    });
+            body.forEach(pr => {
+                expect(pr.id).toBeDefined();
+                expect(pr.number).toBeDefined();
+                expect(pr.title).toBeDefined();
+                expect(pr.state).toBeDefined();
+            });
+        }
+    );
 
     test.afterEach(() => {
         serviceFactory.cleanup();
