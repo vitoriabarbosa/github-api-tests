@@ -11,16 +11,10 @@ test.describe('Repos API Tests', () => {
 
     test.beforeAll(() => {
         if (process.env.GITHUB_TOKEN) {
-            testContext.setGlobal(
-                'token',
-                process.env.GITHUB_TOKEN
-            );
+            testContext.setGlobal('token', process.env.GITHUB_TOKEN);
         }
 
-        testContext.setSuite(
-            'defaultUser',
-            testData.validUser
-        );
+        testContext.setSuite('defaultUser', testData.validUser);
     });
 
     test.beforeEach(async ({ request }) => {
@@ -42,7 +36,16 @@ test.describe('Repos API Tests', () => {
     dynamicCases.repos_scenarios.forEach((scenario) => {
         test(
             `${scenario.id} - ${scenario.description}`,
-            { tag: [...scenario.tags, '@repositorios'] },
+            {
+                tag: [
+                    ...scenario.tags,
+                    '@repositorios',
+                    '@api',
+                    '@github',
+                    '@crud',
+                    '@validacao'
+                ]
+            },
             async () => {
                 const service =
                     serviceFactory.getReposService();
@@ -82,7 +85,10 @@ test.describe('Repos API Tests', () => {
             tag: [
                 '@smoke',
                 '@alta',
-                '@repositorios'
+                '@repositorios',
+                '@consulta',
+                '@api',
+                '@positivo'
             ]
         },
         async () => {
@@ -115,7 +121,9 @@ test.describe('Repos API Tests', () => {
             tag: [
                 '@funcional',
                 '@media',
-                '@repositorios'
+                '@repositorios',
+                '@schema',
+                '@contrato'
             ]
         },
         async () => {
@@ -138,17 +146,10 @@ test.describe('Repos API Tests', () => {
             if (body.length > 0) {
                 const repo = body[0];
 
-                expect(repo)
-                    .toHaveProperty('id');
-
-                expect(repo)
-                    .toHaveProperty('name');
-
-                expect(repo)
-                    .toHaveProperty('owner');
-
-                expect(repo)
-                    .toHaveProperty('private');
+                expect(repo).toHaveProperty('id');
+                expect(repo).toHaveProperty('name');
+                expect(repo).toHaveProperty('owner');
+                expect(repo).toHaveProperty('private');
 
                 expect(typeof repo.id)
                     .toBe('number');
@@ -174,7 +175,10 @@ test.describe('Repos API Tests', () => {
             tag: [
                 '@funcional',
                 '@alta',
-                '@repositorios'
+                '@repositorios',
+                '@negativo',
+                '@404',
+                '@erro'
             ]
         },
         async () => {
@@ -206,7 +210,10 @@ test.describe('Repos API Tests', () => {
             tag: [
                 '@integracao',
                 '@media',
-                '@repositorios'
+                '@repositorios',
+                '@auth',
+                '@seguranca',
+                '@api'
             ]
         },
         async () => {
@@ -214,8 +221,7 @@ test.describe('Repos API Tests', () => {
                 !!testContext.getGlobal('token');
 
             const isCI =
-                process.env.GITHUB_ACTIONS ===
-                'true';
+                process.env.GITHUB_ACTIONS === 'true';
 
             test.skip(
                 !hasToken || isCI,

@@ -17,7 +17,16 @@ test.describe('Commits API Tests', () => {
 
     test(
         'T013 - Listar commits de um repositório',
-        { tag: ['@smoke', '@alta', '@commits'] },
+        {
+            tag: [
+                '@smoke',
+                '@alta',
+                '@commits',
+                '@listagem',
+                '@estrutura',
+                '@headers'
+            ]
+        },
         async () => {
             const service = serviceFactory.getCommitsService();
 
@@ -65,7 +74,16 @@ test.describe('Commits API Tests', () => {
 
     test(
         'T014 - Validar tratamento de erros para repositório inexistente',
-        { tag: ['@funcional', '@alta', '@commits'] },
+        {
+            tag: [
+                '@funcional',
+                '@alta',
+                '@commits',
+                '@erro',
+                '@negativo',
+                '@404'
+            ]
+        },
         async () => {
             const service = serviceFactory.getCommitsService();
 
@@ -84,64 +102,103 @@ test.describe('Commits API Tests', () => {
         }
     );
 
-    test('T015 - Deve retornar 404 para repositório inexistente', async () => {
-        const service = serviceFactory.getCommitsService();
+    test(
+        'T015 - Deve retornar 404 para repositório inexistente',
+        {
+            tag: [
+                '@funcional',
+                '@media',
+                '@commits',
+                '@erro',
+                '@404',
+                '@validacao'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getCommitsService();
 
-        const response = await service.listCommits(
-            testData.invalidOwner,
-            testData.repo
-        );
+            const response = await service.listCommits(
+                testData.invalidOwner,
+                testData.repo
+            );
 
-        const body = await response.json();
+            const body = await response.json();
 
-        assertions.assertStatus(response, 404);
-        assertions.assertNotFound(body);
+            assertions.assertStatus(response, 404);
+            assertions.assertNotFound(body);
 
-        expect(body.message)
-            .toBe('Not Found');
-    });
+            expect(body.message)
+                .toBe('Not Found');
+        }
+    );
 
-    test('T016 - Deve validar estrutura do primeiro commit', async () => {
-        const service = serviceFactory.getCommitsService();
+    test(
+        'T016 - Deve validar estrutura do primeiro commit',
+        {
+            tag: [
+                '@funcional',
+                '@media',
+                '@commits',
+                '@estrutura',
+                '@schema',
+                '@dados'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getCommitsService();
 
-        const response = await service.listCommits(
-            testData.owner,
-            testData.repo
-        );
+            const response = await service.listCommits(
+                testData.owner,
+                testData.repo
+            );
 
-        const commits = await response.json();
+            const commits = await response.json();
 
-        assertions.assertStatus(response, 200);
+            assertions.assertStatus(response, 200);
 
-        const commit = commits[0];
+            const commit = commits[0];
 
-        expect(commit.sha)
-            .toMatch(/^[a-f0-9]{40}$/);
-
-        expect(commit.commit.author.name)
-            .not.toBeNull();
-
-        expect(commit.commit.message.length)
-            .toBeGreaterThan(0);
-    });
-
-    test('T017 - Deve validar que todos os commits possuem SHA válido', async () => {
-        const service = serviceFactory.getCommitsService();
-
-        const response = await service.listCommits(
-            testData.owner,
-            testData.repo
-        );
-
-        const commits = await response.json();
-
-        assertions.assertStatus(response, 200);
-
-        commits.forEach(commit => {
             expect(commit.sha)
                 .toMatch(/^[a-f0-9]{40}$/);
-        });
-    });
+
+            expect(commit.commit.author.name)
+                .not.toBeNull();
+
+            expect(commit.commit.message.length)
+                .toBeGreaterThan(0);
+        }
+    );
+
+    test(
+        'T017 - Deve validar que todos os commits possuem SHA válido',
+        {
+            tag: [
+                '@funcional',
+                '@media',
+                '@commits',
+                '@integridade',
+                '@sha',
+                '@validacao'
+            ]
+        },
+        async () => {
+            const service = serviceFactory.getCommitsService();
+
+            const response = await service.listCommits(
+                testData.owner,
+                testData.repo
+            );
+
+            const commits = await response.json();
+
+            assertions.assertStatus(response, 200);
+
+            commits.forEach(commit => {
+                expect(commit.sha)
+                    .toMatch(/^[a-f0-9]{40}$/);
+            });
+        }
+    );
 
     test.afterEach(() => {
         serviceFactory.cleanup();
