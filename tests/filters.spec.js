@@ -1,86 +1,88 @@
-const { test, expect } = require('@playwright/test')
-const ServiceFactory = require('../core/serviceFactory')
-const Assertions = require('../core/assertions')
-const testData = require('../fixtures/testData')
+const { test, expect } = require('@playwright/test');
+const ServiceFactory = require('../core/serviceFactory');
+const Assertions = require('../core/assertions');
+const testData = require('../fixtures/testData');
 
 test.describe('Filters API Tests', () => {
-    let serviceFactory
-    let assertions
+    let serviceFactory;
+    let assertions;
 
     test.beforeEach(async ({ request }) => {
         serviceFactory = new ServiceFactory(request, {
             baseURL: 'https://api.github.com'
-        })
-        assertions = new Assertions()
-    })
+        });
 
-<<<<<<< HEAD
-    test('T007 - Deve buscar repositórios filtrados por linguagem', async () => {
-        const service = serviceFactory.getReposService()
-=======
-    test('T003 - Teste de Validação de Parametrização de Linguagem', { tag: ['@funcional', '@media', '@filtros'] }, async ({ request }) => {
-        const service = serviceFactory.getReposService(request)
->>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
+        assertions = new Assertions();
+    });
 
-        const response = await service.searchByLanguage(
-            testData.searchLanguage
-        )
+    test(
+        'T003 - Teste de Validação de Parametrização de Linguagem',
+        { tag: ['@funcional', '@media', '@filtros'] },
+        async () => {
+            const service = serviceFactory.getReposService();
 
-        assertions.assertStatus(response, 200)
+            const response = await service.searchByLanguage(
+                testData.searchLanguage
+            );
 
-        const body = await response.json()
+            assertions.assertStatus(response, 200);
 
-        expect(body).toHaveProperty('items')
-        expect(Array.isArray(body.items)).toBeTruthy()
-        expect(body.items.length).toBeGreaterThan(0)
+            const body = await response.json();
 
-        body.items.forEach(repo => {
-            expect(repo).toHaveProperty('name')
-            expect(repo).toHaveProperty('owner')
-            expect(repo).toHaveProperty('html_url')
+            expect(body).toHaveProperty('items');
+            expect(Array.isArray(body.items)).toBeTruthy();
+            expect(body.items.length).toBeGreaterThan(0);
 
-            expect(typeof repo.name).toBe('string')
-            expect(typeof repo.html_url).toBe('string')
-        })
+            body.items.forEach(repo => {
+                expect(repo).toHaveProperty('name');
+                expect(repo).toHaveProperty('owner');
+                expect(repo).toHaveProperty('html_url');
 
-        expect(body.total_count).toBeGreaterThan(0)
-    })
+                expect(typeof repo.name).toBe('string');
+                expect(typeof repo.html_url).toBe('string');
+            });
 
-<<<<<<< HEAD
-    test('T008 - Deve respeitar limite de resultados por página', async () => {
-        const service = serviceFactory.getIssuesService()
-=======
-    test('T004 - Teste de Limitação de Resultados por Página', { tag: ['@funcional', '@media', '@filtros'] }, async ({ request }) => {
-        const service = serviceFactory.getIssuesService(request)
->>>>>>> cf7e18bced28ef07028b5af4a6c6641d9a8ad190
+            expect(body.total_count).toBeGreaterThan(0);
+        }
+    );
 
-        const response = await service.listIssues(
-            testData.owner,
-            testData.repo,
-            null,
-            testData.pagination
-        )
+    test(
+        'T004 - Teste de Limitação de Resultados por Página',
+        { tag: ['@funcional', '@media', '@filtros'] },
+        async () => {
+            const service = serviceFactory.getIssuesService();
 
-        const body = await response.json()
+            const response = await service.listIssues(
+                testData.owner,
+                testData.repo,
+                null,
+                testData.pagination
+            );
 
-        assertions.assertStatus(response, 200)
+            assertions.assertStatus(response, 200);
 
-        expect(Array.isArray(body)).toBeTruthy()
+            const body = await response.json();
 
-        expect(body.length)
-            .toBeLessThanOrEqual(testData.pagination.perPage)
+            expect(Array.isArray(body)).toBeTruthy();
 
-        body.forEach(issue => {
-            expect(issue).toHaveProperty('id')
-            expect(issue).toHaveProperty('title')
-            expect(issue).toHaveProperty('state')
+            expect(body.length)
+                .toBeLessThanOrEqual(
+                    testData.pagination.perPage
+                );
 
-            expect(typeof issue.title).toBe('string')
-        })
-    })
+            body.forEach(issue => {
+                expect(issue).toHaveProperty('id');
+                expect(issue).toHaveProperty('title');
+                expect(issue).toHaveProperty('state');
+
+                expect(typeof issue.title)
+                    .toBe('string');
+            });
+        }
+    );
 
     test('T009 - Deve retornar páginas diferentes', async () => {
-        const service = serviceFactory.getIssuesService()
+        const service = serviceFactory.getIssuesService();
 
         const pageOne = await service.listIssues(
             testData.owner,
@@ -90,7 +92,7 @@ test.describe('Filters API Tests', () => {
                 page: 1,
                 perPage: 5
             }
-        )
+        );
 
         const pageTwo = await service.listIssues(
             testData.owner,
@@ -100,33 +102,44 @@ test.describe('Filters API Tests', () => {
                 page: 2,
                 perPage: 5
             }
-        )
+        );
 
-        const issuesOne = await pageOne.json()
-        const issuesTwo = await pageTwo.json()
+        assertions.assertStatus(pageOne, 200);
+        assertions.assertStatus(pageTwo, 200);
+
+        const issuesOne = await pageOne.json();
+        const issuesTwo = await pageTwo.json();
+
+        expect(issuesOne.length)
+            .toBeGreaterThan(0);
+
+        expect(issuesTwo.length)
+            .toBeGreaterThan(0);
 
         expect(issuesOne[0].id)
-            .not.toBe(issuesTwo[0].id)
-    })
+            .not.toBe(issuesTwo[0].id);
+    });
+
     test('T010 - Deve retornar apenas issues abertas', async () => {
-        const service = serviceFactory.getIssuesService()
+        const service = serviceFactory.getIssuesService();
 
         const response = await service.listIssues(
             testData.owner,
             testData.repo,
             'open'
-        )
+        );
 
-        const body = await response.json()
+        assertions.assertStatus(response, 200);
 
-        assertions.assertStatus(response, 200)
+        const body = await response.json();
 
         body.forEach(issue => {
-            expect(issue.state).toBe('open')
-        })
-    })
+            expect(issue.state)
+                .toBe('open');
+        });
+    });
 
     test.afterEach(() => {
-        serviceFactory.cleanup()
-    })
-})
+        serviceFactory.cleanup();
+    });
+});
