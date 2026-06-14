@@ -22,6 +22,7 @@
     "test:regressao": "playwright test --grep @regressao && node generate-log-report.js",
     "test:integracao": "playwright test --grep @integracao && node generate-log-report.js",
     "test:unidade": "playwright test tests/unit/ && node generate-log-report.js",
+    "test:fast": "playwright test",
 
     "test:alta": "playwright test --grep @alta && node generate-log-report.js",
     "test:media": "playwright test --grep @media && node generate-log-report.js",

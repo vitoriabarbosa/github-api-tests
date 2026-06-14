@@ -1,16 +1,26 @@
-const ApiClient = require('../core/apiClient')
-const SchemaValidator = require('../core/schemaValidator')
+const BaseService = require('../core/baseService')
 const userSchema = require('../schemas/users.schema')
-const config = require('../utils/config')
 
-class UsersService {
+/**
+ * Service for GitHub user-related API actions.
+ */
+class UsersService extends BaseService {
+    /**
+     * Create a UsersService instance.
+     * @param {object} request - Playwright request object.
+     * @param {object} [options={}] - Additional options.
+     */
     constructor(request, options = {}) {
-        this.client = new ApiClient(request, config.BASE_URL)
-        this.validator = new SchemaValidator()
+        super(request, options)
     }
 
+    /**
+     * Get a GitHub user by username.
+     * @param {string} username - GitHub username.
+     * @returns {Promise<object>} Response object.
+     */
     async getUser(username) {
-        const response = await this.client.get(`/users/${username}`)
+        const response = await this.apiClient.get(`/users/${username}`)
         if (response.status() === 200) {
             const body = await response.json()
             this.validator.validate(body, userSchema)
@@ -18,8 +28,13 @@ class UsersService {
         return response
     }
 
+    /**
+     * Get repositories for a specific user.
+     * @param {string} username - GitHub username.
+     * @returns {Promise<object>} Response object.
+     */
     async getUserRepos(username) {
-        const response = await this.client.get(`/users/${username}/repos`)
+        const response = await this.apiClient.get(`/users/${username}/repos`)
         return response
     }
 }

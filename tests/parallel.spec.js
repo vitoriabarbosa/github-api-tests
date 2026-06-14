@@ -6,7 +6,7 @@ const testData = require('../fixtures/testData');
 // testes para validar execucao paralela - atividade 4 do lab 6
 // cada teste instancia seus proprios servicos no beforeEach
 
-test.describe('Parallel Execution', () => {
+test.describe.parallel('Parallel Execution', () => {
     let serviceFactory;
     let assertions;
 

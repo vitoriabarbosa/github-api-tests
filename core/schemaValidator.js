@@ -1,7 +1,15 @@
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
 
+/**
+ * Utility for validating data against JSON schemas.
+ */
 class SchemaValidator {
+    /**
+     * Create a SchemaValidator instance.
+     * @param {object} [options={}] - Validator options.
+     * @param {boolean} [options.throwOnError=true] - Throw an error when validation fails.
+     */
     constructor(options = {}) {
         this.ajv = new Ajv({ 
             allErrors: true,      
@@ -17,6 +25,14 @@ class SchemaValidator {
         this.throwOnError = options.throwOnError !== false
     }
 
+    /**
+     * Validate data against a JSON schema.
+     * @param {*} data - Data to validate.
+     * @param {object} schema - JSON schema definition.
+     * @param {string} [schemaName='unnamed'] - Identifier for schema caching and error messages.
+     * @returns {{valid:boolean,errors:object[]|null,error:Error|null}}
+     * @throws {Error} When the data is invalid and throwOnError is enabled.
+     */
     validate(data, schema, schemaName = 'unnamed') {
         try {
             let validateFn = this.compiledSchemas.get(schemaName)
@@ -44,6 +60,13 @@ class SchemaValidator {
         }
     }
 
+    /**
+     * Validate data without throwing on failure.
+     * @param {*} data - Data to validate.
+     * @param {object} schema - JSON schema definition.
+     * @param {string} [schemaName='unnamed'] - Identifier for schema caching and error messages.
+     * @returns {{valid:boolean,errors:object[]|null,error:Error|null}}
+     */
     validateSilent(data, schema, schemaName = 'unnamed') {
         const originalThrow = this.throwOnError
         this.throwOnError = false
@@ -52,10 +75,22 @@ class SchemaValidator {
         return result
     }
 
+    /**
+     * Async wrapper for validate.
+     * @param {*} data - Data to validate.
+     * @param {object} schema - JSON schema definition.
+     * @param {string} [schemaName='unnamed'] - Identifier for schema caching and error messages.
+     * @returns {Promise<*>} Validation result.
+     */
     async validateAsync(data, schema, schemaName = 'unnamed') {
         return this.validate(data, schema, schemaName)
     }
 
+    /**
+     * Format AJV validation errors into a single readable string.
+     * @param {object[]|null} errors - AJV validation errors.
+     * @returns {string} Formatted error text.
+     */
     formatErrors(errors) {
         if (!errors) return 'Unknown validation error'
         
@@ -66,6 +101,14 @@ class SchemaValidator {
         }).join('\n')
     }
 
+    /**
+     * Validate each item in an array against a schema.
+     * @param {Array} array - Array of items to validate.
+     * @param {object} schema - JSON schema definition.
+     * @param {string} itemSchemaName - Schema name used for item-level errors.
+     * @returns {{total:number,valid:number,invalid:number,errors:Array}} Validation summary.
+     * @throws {Error} When the value is not an array or when validation fails and throwOnError is enabled.
+     */
     validateArrayItem(array, schema, itemSchemaName) {
         if (!Array.isArray(array)) {
             throw new Error(`Expected array for partial validation, got ${typeof array}`)
@@ -95,6 +138,13 @@ class SchemaValidator {
         return results
     }
 
+    /**
+     * Check that required fields exist in the given object.
+     * @param {object} data - Object to validate.
+     * @param {string[]} requiredFields - List of required field names or nested paths.
+     * @returns {boolean} True when all required fields are present.
+     * @throws {Error} When required fields are missing.
+     */
     validateEssential(data, requiredFields) {
         const missingFields = requiredFields.filter(field => {
             if (field.includes('.')) {
