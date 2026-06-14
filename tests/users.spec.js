@@ -202,6 +202,35 @@ test.describe('Users API Tests', () => {
         }
     );
 
+    test(
+        'T010 - Validar listagem de repositórios do usuário',
+        {
+            tag: [
+                '@funcional',
+                '@media',
+                '@usuarios',
+                '@repos',
+                '@api'
+            ]
+        },
+        async () => {
+            const usersService =
+                serviceFactory.getUsersService();
+
+            const user = testContext.getSuite('validUser');
+
+            const response =
+                await usersService.getUserRepos(user);
+
+            const body = await response.json();
+
+            assertions.assertStatus(response, 200);
+            assertions.assertContentType(response);
+
+            expect(Array.isArray(body)).toBeTruthy();
+        }
+    );
+
     test.afterEach(() => {
         serviceFactory.cleanup();
     });

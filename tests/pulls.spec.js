@@ -264,6 +264,26 @@ test.describe('Pulls API Tests', () => {
         }
     );
 
+    test(
+        'T020 - listar pull requests',
+        {
+            tag: ['@critical', '@pulls', '@smoke']
+        },
+        async () => {
+            const service = serviceFactory.getPullsService();
+
+            const response = await service.listPulls(
+                testData.owner,
+                testData.repo
+            );
+
+            assertions.assertStatus(response, 200);
+
+            const body = await response.json();
+            expect(Array.isArray(body)).toBeTruthy();
+        }
+    );
+
     test.afterEach(() => {
         serviceFactory.cleanup();
     });

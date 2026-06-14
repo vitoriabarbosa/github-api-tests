@@ -200,6 +200,26 @@ test.describe('Commits API Tests', () => {
         }
     );
 
+    test(
+        'T020 -  listar commits',
+        {
+            tag: ['@critical', '@commits', '@smoke']
+        },
+        async () => {
+            const service = serviceFactory.getCommitsService();
+
+            const response = await service.listCommits(
+                testData.owner,
+                testData.repo
+            );
+
+            assertions.assertStatus(response, 200);
+
+            const body = await response.json();
+            expect(Array.isArray(body)).toBeTruthy();
+        }
+    );
+
     test.afterEach(() => {
         serviceFactory.cleanup();
     });

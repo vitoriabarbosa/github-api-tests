@@ -243,6 +243,29 @@ test.describe('Repos API Tests', () => {
         }
     );
 
+    test(
+        'T020 - obter repositório específico',
+        {
+            tag: ['@critical', '@repositorios', '@smoke']
+        },
+        async () => {
+            const service = serviceFactory.getReposService();
+
+            const response = await service.getRepo(
+                testData.owner,
+                testData.repo
+            );
+
+            const body = await response.json();
+
+            assertions.assertStatus(response, 200);
+            assertions.assertContentType(response);
+
+            expect(body.name).toBe(testData.repo);
+            expect(body.owner.login.toLowerCase()).toBe(testData.owner.toLowerCase());
+        }
+    );
+
     test.afterEach(() => {
         serviceFactory.cleanup();
     });

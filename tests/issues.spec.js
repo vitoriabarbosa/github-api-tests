@@ -324,6 +324,27 @@ test.describe('Issues API Tests', () => {
         }
     );
 
+    test(
+        'T020 - listar issues',
+        {
+            tag: ['@critical', '@issues', '@smoke']
+        },
+        async () => {
+            const service = serviceFactory.getIssuesService();
+
+            const response = await service.listIssues(
+                testData.owner,
+                testData.repo
+            );
+
+            assertions.assertStatus(response, 200);
+            assertions.assertContentTypeSoft(response);
+
+            const body = await response.json();
+            expect(Array.isArray(body)).toBeTruthy();
+        }
+    );
+
     test.afterEach(() => {
         serviceFactory.cleanup();
     });
